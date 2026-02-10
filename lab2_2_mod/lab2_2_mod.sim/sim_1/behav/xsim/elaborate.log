@@ -1,0 +1,27 @@
+Vivado Simulator v2022.2
+Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
+Running: /tools/Xilinx/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot testbench8_behav xil_defaultlib.testbench8 xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4100] "/home/ece385user/Documents/lab2_2_mod/lab2_2_mod.srcs/sim_1/imports/sim_sources/testbench_8.sv" Line 1. Module testbench8 has a timescale but at least one module in design doesn't have timescale.
+WARNING: [XSIM 43-4100] "/home/ece385user/Documents/lab2_2_mod/lab2_2_mod.srcs/sim_1/imports/sim_sources/testbench_8.sv" Line 1. Module testbench8 has a timescale but at least one module in design doesn't have timescale.
+WARNING: [XSIM 43-4100] "/home/ece385user/Documents/lab2_2_mod/lab2_2_mod.sim/sim_1/behav/xsim/glbl.v" Line 6. Module glbl has a timescale but at least one module in design doesn't have timescale.
+WARNING: [XSIM 43-4100] "/home/ece385user/Documents/lab2_2_mod/lab2_2_mod.sim/sim_1/behav/xsim/glbl.v" Line 6. Module glbl has a timescale but at least one module in design doesn't have timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package xil_defaultlib.$unit_Control_sv_1411822023
+Compiling module xil_defaultlib.reg_4
+Compiling module xil_defaultlib.register_unit
+Compiling module xil_defaultlib.compute
+Compiling module xil_defaultlib.router
+Compiling module xil_defaultlib.control
+Compiling module xil_defaultlib.nibble_to_hex
+Compiling module xil_defaultlib.HexDriver_default
+Compiling module xil_defaultlib.sync_debounce
+Compiling module xil_defaultlib.Processor_default
+Compiling module xil_defaultlib.testbench8
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot testbench8_behav

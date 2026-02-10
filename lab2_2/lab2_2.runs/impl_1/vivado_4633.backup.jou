@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Vivado v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Thu Feb  5 16:39:49 2026
+# Process ID: 4633
+# Current directory: /home/ece385user/Documents/lab2_2/lab2_2.runs/impl_1
+# Command line: vivado -log Processor.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source Processor.tcl -notrace
+# Log file: /home/ece385user/Documents/lab2_2/lab2_2.runs/impl_1/Processor.vdi
+# Journal file: /home/ece385user/Documents/lab2_2/lab2_2.runs/impl_1/vivado.jou
+# Running On: vivado22, OS: Linux, CPU Frequency: 3792.838 MHz, CPU Physical cores: 8, Host memory: 16372 MB
+#-----------------------------------------------------------
+source Processor.tcl -notrace
