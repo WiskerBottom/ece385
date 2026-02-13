@@ -21,18 +21,59 @@ module multiplier_toplevel   (
 
 	logic x; 
     logic cin;
+    logic shift_en;
+    logic sw_i_2_comp [7:0];
+    logic A_load;
+    logic Aout [7:0];
+    logic Bout [7:0];
+    logic count [2:0]; //this is going to count what addition we are currently on, this will require an FSM.
+    assign m = Bval[0];
 
-	select_adder adder(.a({8'b0, sw_i}), .b({8'b0,Bval[8:0]}), .cin(0), .s({7'b0,x,Aval[7:0]}), .cout(x));
-		
-	load_reg regA(8) (.clk(clk), .);
-	
-	input  logic	    clk, 
-	input  logic	    reset, 
-	input  logic	    load,
-	input  logic        shift,
-	input  logic        serial_in,
-	input  logic [DATA_WIDTH-1:0] data_i, // set input/output size based on parameter
+    two_comp sw_comp(.value(sw_i[7:0]), .two_complement(sw_i_2_comp));
 
-	output logic [DATA_WIDTH-1:0] data_q	
+    logic two_complement_mux_out [7:0];
+    mux #(.DATA_WIDTH(8)) adder_input_mux ( //when C is 1, output A
+    
+    .A(sw_i_2_comp[7:0]),
+    .B(sw_i[7:0]),
+    .C(m & count[2] & count[1] & count[2]), //only 1 on 8th count and if m is 1
+    .out(two_complement_mux_out)
+    );
+
+	select_adder adder(
+        .a({8'b0, two_complement_mux_out}), 
+        .b({8'b0,Aval[8:0]}), 
+        .cin(0), 
+        .s({7'b0,x,Aval[7:0]}), 
+        .cout(x));
+            
+	load_reg #(.DATA_WIDTH(8)) regA (
+        .clk(clk), 
+        .reset(reset_loadB_clearA), 
+        .load(A_load), 
+        .shift(shift_en), 
+        .serial_in(x), 
+        .data_i(Aval[7:0]), 
+        .data_q(Aout[7:0]));
+        
+    load_reg #(.DATA_WIDTH(8)) regX ( //treat this as the 9th bit of reg A
+        .clk(clk), 
+        .reset(reset_loadB_clearA), 
+        .load(A_load), 
+        .shift(0), //we dont shift in this household 
+        .serial_in(x), 
+        .data_i(Aval[7:0]), 
+        .data_q(Aout[7:0]));
+
+    load_reg #(.DATA_WIDTH(8)) regB (
+        .clk(clk), 
+        .reset(0), //we don't clear in this household 
+        .load(reset_loadB_clearA), 
+        .shift(shift_en),
+        .serial_in(Aval[0]), //shift in LSB of A (since we are kind of treading A+B as a long single number) 
+        .data_i(sw_i[7:0]), 
+        .data_q(Bout[7:0]));
+
+    
 		
 endmodule
