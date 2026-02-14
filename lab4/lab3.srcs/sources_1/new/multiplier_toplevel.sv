@@ -56,14 +56,14 @@ module multiplier_toplevel   (
         .data_i(Aval[7:0]), 
         .data_q(Aout[7:0]));
         
-    load_reg #(.DATA_WIDTH(8)) regX ( //treat this as the 9th bit of reg A
+    load_reg #(.DATA_WIDTH(1)) regX ( //treat this as the 9th bit of reg A
         .clk(clk), 
         .reset(reset_loadB_clearA), 
         .load(A_load), 
         .shift(0), //we dont shift in this household 
         .serial_in(x), 
-        .data_i(Aval[7:0]), 
-        .data_q(Aout[7:0]));
+        .data_i(x), 
+        .data_q(x));
 
     load_reg #(.DATA_WIDTH(8)) regB (
         .clk(clk), 

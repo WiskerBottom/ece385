@@ -9,12 +9,12 @@ module load_reg #(parameter DATA_WIDTH = 8)
 	input  logic	    load,
 	input  logic        shift,
 	input  logic        serial_in,
-	input  logic [DATA_WIDTH-1:0] data_i, // set input/output size based on parameter
+	input  logic [DATA_WIDTH-1:0] data_i, //data in
 
-	output logic [DATA_WIDTH-1:0] data_q
+	output logic [DATA_WIDTH-1:0] data_q //data out
 );
 
-	logic [DATA_WIDTH-1:0] data_d;
+	logic [DATA_WIDTH-1:0] data_d; //used for internal representation of what the register is storing
 
 	always_comb
 	begin
