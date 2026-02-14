@@ -26,19 +26,17 @@ module multiplier_toplevel   (
     logic A_load;
     logic Aout [7:0];
     logic Bout [7:0];
-    logic count [2:0]; //this is going to count what addition we are currently on, this will require an FSM.
+    logic count [2:0]; //this is going to count what addition we are currently on, this will require an FSM (see ShiftCounter).
     assign m = Bval[0];
 
     two_comp sw_comp(.value(sw_i[7:0]), .two_complement(sw_i_2_comp));
 
     logic two_complement_mux_out [7:0];
     mux #(.DATA_WIDTH(8)) adder_input_mux ( //when C is 1, output A
-    
-    .A(sw_i_2_comp[7:0]),
-    .B(sw_i[7:0]),
-    .C(m & count[2] & count[1] & count[2]), //only 1 on 8th count and if m is 1
-    .out(two_complement_mux_out)
-    );
+        .A(sw_i_2_comp[7:0]),
+        .B(sw_i[7:0]),
+        .C(m & count[2] & count[1] & count[2]), //only 1 on 8th count and if m is 1
+        .out(two_complement_mux_out));
 
 	select_adder adder(
         .a({8'b0, two_complement_mux_out}), 
@@ -74,6 +72,7 @@ module multiplier_toplevel   (
         .data_i(sw_i[7:0]), 
         .data_q(Bout[7:0]));
 
+    ShiftCounter counter(.*, .ShiftCount(count));
     
 		
 endmodule
