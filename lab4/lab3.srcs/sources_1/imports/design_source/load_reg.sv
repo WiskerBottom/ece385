@@ -32,10 +32,10 @@ module load_reg #(parameter DATA_WIDTH = 8)
             begin
                 // Setting the output data_o of the register to zeros as Reset is pressed
                 if(reset) begin //notice that this is a synchronous reset
-                    data_q <= '0;
+                    data_q <= 16'h0;
                 end else begin
                     if (shift) begin
-	                    data_q <= {serial_in, data_q[2:0]}; //shift existing bits and add serial info
+	                    data_q <= {serial_in, data_d[DATA_WIDTH-1:1]}; //shift existing bits and add serial info
 	                end else begin 
                         data_q <= data_d;
                     end

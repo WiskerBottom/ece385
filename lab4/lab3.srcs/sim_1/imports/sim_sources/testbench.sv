@@ -4,31 +4,18 @@ timeunit 10ns;  // This is the amount of time represented by #1
 timeprecision 1ns;
 
 
-// These signals are internal because the processor will be 
-// instantiated as a submodule in testbench.
 logic clk;
 logic reset;
-logic run_i;
-logic [15:0] sw_i;
+logic load;
+logic shift;
+logic serial_in;
+logic [7:0] data_i; //data in
+logic [7:0] data_q; //data out
 
-logic [15:0] sw_s;
-logic [15:0] out;
-logic [15:0] s;
-
-logic sign_led;
-logic 		sign_led;
-logic [7:0]  hex_seg_a;
-logic [3:0]  hex_grid_a;
-logic [7:0]  hex_seg_b;
-logic [3:0]  hex_grid_b;
-
-// To store expected results
-logic [3:0] ans_1a;
-logic [3:0] ans_2b;
 
 // Instantiating the DUT (Device Under Test)
 // Make sure the module and signal names match with those in your design
-adder_toplevel addertop0 (.*);	
+load_reg #(.DATA_WIDTH(8)) regA_0  (.*);	
 
 
 initial begin: CLOCK_INITIALIZATION
@@ -58,33 +45,33 @@ end
 // happens first. 
 initial begin
 	reset = 1;		// Toggle Reset (use blocking operator), because we want to have this happen 'first'
-	run_i <= 1'b0;
+    serial_in <= 1'b0;
+    load <= 1'b0;
+    shift <= 1'b0;
     #100
+    
     reset = 0;
     #100  
-    //sw_i <= 16'b0111000011110000; //first input to adder
-    sw_i <= 1;
+    
+    serial_in <= 1'b1;
+    data_i[7:0] <= 8'b11000011;
     #100
     
-    //first run of add
-    run_i <= 1'b1;
+    @(posedge clk);
+    load <= 1'b1;
+    
+    @(posedge clk);
+    load <= 1'b0;
+    
+    
+    @(posedge clk);
+    shift <= 1'b1;
+    
+    @(posedge clk);
+    shift <= 1'b0;
+    
     #100
-    run_i <= 1'b0;
-    #100 // wait for comp to finish
-    //end of first run of add
     
-    //sw_i <= 16'b0111000011110000; //load second number
-    
-    //second run of add
-    run_i <= 1'b1;
-    #100
-    run_i <= 1'b0;
-    #100 //wait for comp to finish
-    //end of second run of add
-    
-    
-	assert (s[15:0] == 16'b01110000111100000) else $display("calculation incorrect for select_adder");
-
 	$finish(); //this task will end the simulation if the Vivado settings are properly configured
 
 end
