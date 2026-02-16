@@ -73,7 +73,11 @@ always_comb
 		end
 		else 
 		begin
-			curr_state <= next_state;
+		    if (shift_en) begin
+			     curr_state <= next_state;
+			end else begin
+			     curr_state <= curr_state;
+			end
 		end
 	end
     

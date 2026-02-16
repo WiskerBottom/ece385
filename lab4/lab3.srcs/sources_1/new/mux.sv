@@ -32,8 +32,8 @@ module mux #(parameter DATA_WIDTH = 8) ( //when C is 1 select [3;0] A
     logic [DATA_WIDTH-1:0] and_NOTCB;
         
     always_comb begin 
-        and_AC = A & C;
-        and_NOTCB = B & ~C;
+        and_AC = A & {C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C};
+        and_NOTCB = B & ~{C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C};
         
         out = and_AC | and_NOTCB;
     end

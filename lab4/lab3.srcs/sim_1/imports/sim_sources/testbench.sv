@@ -8,14 +8,37 @@ logic clk;
 logic reset;
 logic load;
 logic shift;
+logic A_load;
 logic serial_in;
+logic [7:0] value;
+logic [16:0] sum;
+logic [7:0] two_complement;
 logic [7:0] data_i; //data in
 logic [7:0] data_q; //data out
+logic m;
+logic [7:0] sw_i;
+logic [2:0] count;
+logic [7:0] Aval;
+logic [7:0] Aout;
+logic shift_en;
+logic x_in;
+
+logic 		SWlogic [7:0];
+logic		reset_loadB_clearA;
+//logic        clk,
+logic 		run; // _i stands for input
+//logic [7:0] sw_i,
+
+//logic [7:0]  Aval;
+logic [7:0]  Bval;
+logic        Xval;
+logic [3:0]  hex_grid;
+logic [7:0]  hex_seg;
 
 
 // Instantiating the DUT (Device Under Test)
 // Make sure the module and signal names match with those in your design
-load_reg #(.DATA_WIDTH(8)) regA_0  (.*);	
+multiplier_toplevel multiplier_toplevel0  (.*);	
 
 
 initial begin: CLOCK_INITIALIZATION
@@ -44,11 +67,51 @@ end
 // same simulation timestep. The exception is for reset, which we want to make sure
 // happens first. 
 initial begin
-	reset = 1;		// Toggle Reset (use blocking operator), because we want to have this happen 'first'
-    serial_in <= 1'b0;
-    load <= 1'b0;
-    shift <= 1'b0;
-    #100
+    /*
+    run <= 1'b0;
+    reset_loadB_clearA <= 1'b1;
+    shift_en <= 1'b0;
+    m <= 1'b0;
+    repeat (10) @(posedge clk);
+    reset_loadB_clearA <= 1'b0;
+    #5;
+    m <= 1'b0;
+    run <= 1'b1;
+    */
+    
+    reset_loadB_clearA = 1'b1;
+    #3
+    reset_loadB_clearA = 1'b0;
+    #3
+    
+    
+    A_load <= 1'b0;
+    reset_loadB_clearA <= 1'b0;
+    reset <= 1'b0;
+    
+    sw_i <= 8'b00011101; //init value of B
+    Aval[7:0] <= 8'b11100000; //init value of A
+    x_in <= 1'b1; //init value of X
+    
+    #10
+    
+    reset_loadB_clearA <= 1'b1;
+    //reset_loadB_clearA <= 1'b1;
+    //reset <= 1'b1;
+    
+    #10
+    
+    /*
+        
+    sw_i <= 8'b00011101; //value we are repeatedly adding
+
+    
+    
+    A_load <= 8'b00000111;
+    shift_en <= 1'b1;
+    Aval[7:0] <= 8'b11100000;
+    reset_loadB_clearA <= 1'b1;
+    
     
     reset = 0;
     #100  
@@ -71,6 +134,8 @@ initial begin
     shift <= 1'b0;
     
     #100
+    
+    */
     
 	$finish(); //this task will end the simulation if the Vivado settings are properly configured
 
