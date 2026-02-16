@@ -5,7 +5,7 @@ module control (
 	input  logic run,
 	input  logic m,
 	input  logic reset,
-	input  logic [2:0] counter, //this counts the number of shifts done, we want to go back to idle when this reaches 8
+	input  logic [3:0] counter, //this counts the number of shifts done, we want to go back to idle when this reaches 8
 
 	output logic shift,
 	output logic LoadA,
@@ -36,6 +36,7 @@ module control (
 				clear_x_a = 1'b0;
 
 				if (run) begin
+				    //LoadA = 1'b1;
 				    next_state = s_clear;
 				end else begin
 				    next_state = s_idle;
@@ -44,20 +45,36 @@ module control (
 
 			s_add: 
 			begin
-				LoadA = 1'b1;
-				LoadB = 1'b0;
-				shift = 1'b0;
-				clear_x_a = 1'b0;
+			
+			    case (counter[3:0])
+                    4'b1000 : begin
+                        shift = 1'b0;
+                        next_state = s_done;
+                    end
+                    
+                    default begin
+                    
+                        if (m) begin //if m is 1 then do not load the result we get here.
+			                LoadA = 1'b1;
+			            end else begin
+			                LoadA = 1'b0;
+			            end
+				        LoadB = 1'b0;
+				        shift = 1'b0;
+				        clear_x_a = 1'b0;
 
-				next_state = s_shift;
+				        next_state = s_shift;
+                    
+                    end
+                endcase
 			end
 
             s_shift:
             begin
            
                 
-                case (counter[2:0])
-                    3'b111 : begin
+                case (counter[3:0]) //this can be removed later, moved to s_add
+                    4'd8 : begin
                         shift = 1'b0;
                         next_state = s_done;
                     end
@@ -65,11 +82,11 @@ module control (
                     default begin
                         shift = 1'b1;
                         
-                        if (m) begin
-                            next_state = s_add; //if m = 1 then add
-                        end else begin
-                            next_state = s_shift; // if m = 0, skip addition this cycle, due to sometimes skipping adding, we need to count shifts, not clocks.
-                        end
+                        //if (m) begin
+                        next_state = s_add; //if m = 1 then add
+                        //end else begin
+                        //next_state = s_shift; // if m = 0, skip addition this cycle, due to sometimes skipping adding, we need to count shifts, not clocks.
+                        //end
                         
                     end
                 endcase

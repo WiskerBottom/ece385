@@ -5,32 +5,19 @@ timeprecision 1ns;
 
 
 logic clk;
-logic reset;
-logic load;
-logic shift;
-logic A_load;
-logic serial_in;
-logic [7:0] value;
-logic [16:0] sum;
-logic [7:0] two_complement;
-logic [7:0] data_i; //data in
-logic [7:0] data_q; //data out
 logic m;
+logic reset_loadB_clearA;
+logic [16:0] sum;
 logic [7:0] sw_i;
-logic [2:0] count;
-logic [7:0] Aval;
 logic [7:0] Aout;
-logic shift_en;
+logic [7:0] Bout;
+logic Xval;
 logic x_in;
-
-logic 		SWlogic [7:0];
-logic		reset_loadB_clearA;
 //logic        clk,
 logic 		run; // _i stands for input
 //logic [7:0] sw_i,
 
 //logic [7:0]  Aval;
-logic [7:0]  Bval;
 logic        Xval;
 logic [3:0]  hex_grid;
 logic [7:0]  hex_seg;
@@ -79,27 +66,6 @@ initial begin
     run <= 1'b1;
     */
     
-    reset_loadB_clearA = 1'b1;
-    #3
-    reset_loadB_clearA = 1'b0;
-    #3
-    
-    
-    A_load <= 1'b0;
-    reset_loadB_clearA <= 1'b0;
-    reset <= 1'b0;
-    
-    sw_i <= 8'b00011101; //init value of B
-    Aval[7:0] <= 8'b11100000; //init value of A
-    x_in <= 1'b1; //init value of X
-    
-    #10
-    
-    reset_loadB_clearA <= 1'b1;
-    //reset_loadB_clearA <= 1'b1;
-    //reset <= 1'b1;
-    
-    #10
     
     /*
         
@@ -136,6 +102,48 @@ initial begin
     #100
     
     */
+    
+    reset_loadB_clearA <= 1'b0;
+    run <= 1'b0;
+    
+    sw_i <= 8'b11000101; //value we are repeatedly adding
+    //sw_i <= 8'b11111111; //value we are repeatedly adding
+    
+    
+    #10
+    
+    @(posedge clk);
+    reset_loadB_clearA <= 1'b1;
+    @(posedge clk);
+    reset_loadB_clearA <= 1'b0;
+    
+    sw_i <= 8'b00000111;
+    //sw_i <= 8'b11111111;
+
+    
+    #10
+    
+    @(posedge clk);
+    run <= 1'b1;
+    @(posedge clk);
+    run <= 1'b0;
+    
+    #60
+    
+    
+    @(posedge clk);
+    run <= 1'b1;
+    @(posedge clk);
+    run <= 1'b0;
+    
+    #60
+    
+    @(posedge clk);
+    run <= 1'b1;
+    @(posedge clk);
+    run <= 1'b0;
+    
+    #60
     
 	$finish(); //this task will end the simulation if the Vivado settings are properly configured
 
