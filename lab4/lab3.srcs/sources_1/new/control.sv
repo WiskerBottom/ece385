@@ -73,7 +73,7 @@ module control (
             begin
            
                 
-                case (counter[3:0]) //this can be removed later, moved to s_add
+                case (counter[3:0])
                     4'd8 : begin
                         shift = 1'b0;
                         next_state = s_done;
