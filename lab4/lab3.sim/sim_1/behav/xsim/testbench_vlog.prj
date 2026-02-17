@@ -3,11 +3,13 @@ sv xil_defaultlib  \
 "../../../../lab3.srcs/sources_1/new/2-1mux.sv" \
 "../../../../lab3.srcs/sources_1/new/ShiftCounter.sv" \
 "../../../../lab3.srcs/sources_1/new/control.sv" \
+"../../../../lab3.srcs/sources_1/imports/design_source/hex_driver.sv" \
 "../../../../lab3.srcs/sources_1/imports/design_source/load_reg.sv" \
 "../../../../lab3.srcs/sources_1/new/multiplier_toplevel.sv" \
 "../../../../lab3.srcs/sources_1/new/mux.sv" \
 "../../../../lab3.srcs/sources_1/imports/design_source/ripple_adder.sv" \
 "../../../../lab3.srcs/sources_1/imports/design_source/select_adder.sv" \
+"../../../../lab3.srcs/sources_1/imports/design_source/sync_debounce.sv" \
 "../../../../lab3.srcs/sources_1/new/two_comp.sv" \
 "../../../../lab3.srcs/sim_1/imports/sim_sources/testbench.sv" \
 

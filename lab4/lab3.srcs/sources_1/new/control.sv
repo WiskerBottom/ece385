@@ -49,6 +49,9 @@ module control (
 			    case (counter[3:0])
                     4'b1000 : begin
                         shift = 1'b0;
+                        LoadB = 1'b0;
+                        LoadA = 1'b0;
+                        clear_x_a = 1'b0;
                         next_state = s_done;
                     end
                     
@@ -101,6 +104,10 @@ module control (
 			
 			s_done:
 			begin
+			    LoadA = 1'b0;
+                LoadB = 1'b0;
+                clear_x_a = 1'b0;
+                shift = 1'b0;
                 if(run) begin
                      next_state = s_done;
                 end else begin 

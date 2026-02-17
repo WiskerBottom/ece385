@@ -21,7 +21,8 @@ logic 		run; // _i stands for input
 logic        Xval;
 logic [3:0]  hex_grid;
 logic [7:0]  hex_seg;
-
+logic [3:0]  hex_grid2;
+logic [7:0]  hex_seg2;
 
 // Instantiating the DUT (Device Under Test)
 // Make sure the module and signal names match with those in your design
@@ -106,41 +107,41 @@ initial begin
     reset_loadB_clearA <= 1'b0;
     run <= 1'b0;
     
-    sw_i <= 8'b11000101; //value we are repeatedly adding
+    sw_i <= 8'b00000011; //value we are repeatedly adding
     //sw_i <= 8'b11111111; //value we are repeatedly adding
     
     
     #10
     
-    @(posedge clk);
+    repeat (20) @(posedge clk);
     reset_loadB_clearA <= 1'b1;
-    @(posedge clk);
+    repeat (20) @(posedge clk);
     reset_loadB_clearA <= 1'b0;
     
-    sw_i <= 8'b00000111;
+    sw_i <= 8'b00000001;
     //sw_i <= 8'b11111111;
 
     
     #10
     
-    @(posedge clk);
+    repeat (20) @(posedge clk);
     run <= 1'b1;
-    @(posedge clk);
+    repeat (20) @(posedge clk);
     run <= 1'b0;
     
     #60
     
     
-    @(posedge clk);
+    repeat (20) @(posedge clk);
     run <= 1'b1;
-    @(posedge clk);
+    repeat (20) @(posedge clk);
     run <= 1'b0;
     
     #60
     
-    @(posedge clk);
+    repeat (20) @(posedge clk);
     run <= 1'b1;
-    @(posedge clk);
+    repeat (20) @(posedge clk);
     run <= 1'b0;
     
     #60

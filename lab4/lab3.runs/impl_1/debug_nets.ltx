@@ -1,0 +1,544 @@
+{
+    "ltx_root": {
+        "version": 4,
+        "minor": 0,
+        "ltx_data": [
+            {
+                "name": "EDA_PROBESET",
+                "active": true,
+                "debug_cores": [
+                    {
+                        "type": "XSDB_V3",
+                        "name": "dbg_hub",
+                        "spec": "labtools_xsdbm_v3",
+                        "clk_input_freq_hz": "100000000"
+                    },
+                    {
+                        "type": "ILA_V3",
+                        "name": "u_ila_0",
+                        "spec": "labtools_ila_v6",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 0,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "23e7d65a79bc59f7bc47406c1714dfae",
+                        "pins": [
+                            {
+                                "name": "probe0",
+                                "id": 0,
+                                "type": "DATA",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 2,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "controlMachine/curr_state",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "controlMachine/curr_state[2]",
+                                                "parentNetId": 0
+                                            },
+                                            {
+                                                "name": "controlMachine/curr_state[1]",
+                                                "parentNetId": 1
+                                            },
+                                            {
+                                                "name": "controlMachine/curr_state[0]",
+                                                "parentNetId": 2
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe1",
+                                "id": 1,
+                                "type": "DATA",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 3,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "counter/curr_state__0",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "counter/curr_state__0[3]",
+                                                "parentNetId": 3
+                                            },
+                                            {
+                                                "name": "counter/curr_state__0[2]",
+                                                "parentNetId": 4
+                                            },
+                                            {
+                                                "name": "counter/curr_state__0[1]",
+                                                "parentNetId": 5
+                                            },
+                                            {
+                                                "name": "counter/curr_state__0[0]",
+                                                "parentNetId": 6
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 2,
+                                "type": "DATA",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 2,
+                                "nets": [
+                                    {
+                                        "name": "Aout_OBUF",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "Aout_OBUF[7]"
+                                            },
+                                            {
+                                                "name": "Aout_OBUF[6]"
+                                            },
+                                            {
+                                                "name": "Aout_OBUF[5]"
+                                            },
+                                            {
+                                                "name": "Aout_OBUF[4]"
+                                            },
+                                            {
+                                                "name": "Aout_OBUF[3]"
+                                            },
+                                            {
+                                                "name": "Aout_OBUF[2]"
+                                            },
+                                            {
+                                                "name": "Aout_OBUF[1]"
+                                            },
+                                            {
+                                                "name": "Aout_OBUF[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe3",
+                                "id": 3,
+                                "type": "DATA",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 3,
+                                "nets": [
+                                    {
+                                        "name": "Bout_OBUF",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "Bout_OBUF[7]"
+                                            },
+                                            {
+                                                "name": "Bout_OBUF[6]"
+                                            },
+                                            {
+                                                "name": "Bout_OBUF[5]"
+                                            },
+                                            {
+                                                "name": "Bout_OBUF[4]"
+                                            },
+                                            {
+                                                "name": "Bout_OBUF[3]"
+                                            },
+                                            {
+                                                "name": "Bout_OBUF[2]"
+                                            },
+                                            {
+                                                "name": "Bout_OBUF[1]"
+                                            },
+                                            {
+                                                "name": "Bout_OBUF[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe4",
+                                "id": 4,
+                                "type": "DATA",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 4,
+                                "nets": [
+                                    {
+                                        "name": "A_load",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe5",
+                                "id": 5,
+                                "type": "DATA",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 5,
+                                "nets": [
+                                    {
+                                        "name": "reset_loadB_clearA_IBUF",
+                                        "isBus": false,
+                                        "parentNetId": 24
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe6",
+                                "id": 6,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 6,
+                                "nets": [
+                                    {
+                                        "name": "run_IBUF",
+                                        "isBus": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "parent_nets": [
+                    {
+                        "id": 0,
+                        "name": "controlMachine/curr_state[2]",
+                        "state_reg": [
+                            {
+                                "name": "controlMachine/curr_state_reg[2]",
+                                "states": [
+                                    {
+                                        "name": "s_idle",
+                                        "val": "0000"
+                                    },
+                                    {
+                                        "name": "s_add",
+                                        "val": "0001"
+                                    },
+                                    {
+                                        "name": "s_shift",
+                                        "val": "0010"
+                                    },
+                                    {
+                                        "name": "s_done",
+                                        "val": "0011"
+                                    },
+                                    {
+                                        "name": "s_clear",
+                                        "val": "0100"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 1,
+                        "name": "controlMachine/curr_state[1]",
+                        "state_reg": [
+                            {
+                                "name": "controlMachine/curr_state_reg[1]",
+                                "states": [
+                                    {
+                                        "name": "s_idle",
+                                        "val": "0000"
+                                    },
+                                    {
+                                        "name": "s_add",
+                                        "val": "0001"
+                                    },
+                                    {
+                                        "name": "s_shift",
+                                        "val": "0010"
+                                    },
+                                    {
+                                        "name": "s_done",
+                                        "val": "0011"
+                                    },
+                                    {
+                                        "name": "s_clear",
+                                        "val": "0100"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "name": "controlMachine/curr_state[0]",
+                        "state_reg": [
+                            {
+                                "name": "controlMachine/curr_state_reg[0]",
+                                "states": [
+                                    {
+                                        "name": "s_idle",
+                                        "val": "0000"
+                                    },
+                                    {
+                                        "name": "s_add",
+                                        "val": "0001"
+                                    },
+                                    {
+                                        "name": "s_shift",
+                                        "val": "0010"
+                                    },
+                                    {
+                                        "name": "s_done",
+                                        "val": "0011"
+                                    },
+                                    {
+                                        "name": "s_clear",
+                                        "val": "0100"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 3,
+                        "name": "counter/curr_state__0[3]",
+                        "state_reg": [
+                            {
+                                "name": "counter/FSM_sequential_curr_state_reg[3]",
+                                "states": [
+                                    {
+                                        "name": "s_count3",
+                                        "val": "0011"
+                                    },
+                                    {
+                                        "name": "s_count4",
+                                        "val": "0100"
+                                    },
+                                    {
+                                        "name": "s_count2",
+                                        "val": "0010"
+                                    },
+                                    {
+                                        "name": "s_count1",
+                                        "val": "0001"
+                                    },
+                                    {
+                                        "name": "s_count0",
+                                        "val": "0000"
+                                    },
+                                    {
+                                        "name": "s_count7",
+                                        "val": "0111"
+                                    },
+                                    {
+                                        "name": "s_count6",
+                                        "val": "0110"
+                                    },
+                                    {
+                                        "name": "s_count8",
+                                        "val": "1000"
+                                    },
+                                    {
+                                        "name": "s_count5",
+                                        "val": "0101"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 4,
+                        "name": "counter/curr_state__0[2]",
+                        "state_reg": [
+                            {
+                                "name": "counter/FSM_sequential_curr_state_reg[2]",
+                                "states": [
+                                    {
+                                        "name": "s_count3",
+                                        "val": "0011"
+                                    },
+                                    {
+                                        "name": "s_count4",
+                                        "val": "0100"
+                                    },
+                                    {
+                                        "name": "s_count2",
+                                        "val": "0010"
+                                    },
+                                    {
+                                        "name": "s_count1",
+                                        "val": "0001"
+                                    },
+                                    {
+                                        "name": "s_count0",
+                                        "val": "0000"
+                                    },
+                                    {
+                                        "name": "s_count7",
+                                        "val": "0111"
+                                    },
+                                    {
+                                        "name": "s_count6",
+                                        "val": "0110"
+                                    },
+                                    {
+                                        "name": "s_count8",
+                                        "val": "1000"
+                                    },
+                                    {
+                                        "name": "s_count5",
+                                        "val": "0101"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 5,
+                        "name": "counter/curr_state__0[1]",
+                        "state_reg": [
+                            {
+                                "name": "counter/FSM_sequential_curr_state_reg[1]",
+                                "states": [
+                                    {
+                                        "name": "s_count3",
+                                        "val": "0011"
+                                    },
+                                    {
+                                        "name": "s_count4",
+                                        "val": "0100"
+                                    },
+                                    {
+                                        "name": "s_count2",
+                                        "val": "0010"
+                                    },
+                                    {
+                                        "name": "s_count1",
+                                        "val": "0001"
+                                    },
+                                    {
+                                        "name": "s_count0",
+                                        "val": "0000"
+                                    },
+                                    {
+                                        "name": "s_count7",
+                                        "val": "0111"
+                                    },
+                                    {
+                                        "name": "s_count6",
+                                        "val": "0110"
+                                    },
+                                    {
+                                        "name": "s_count8",
+                                        "val": "1000"
+                                    },
+                                    {
+                                        "name": "s_count5",
+                                        "val": "0101"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 6,
+                        "name": "counter/curr_state__0[0]",
+                        "state_reg": [
+                            {
+                                "name": "counter/FSM_sequential_curr_state_reg[0]",
+                                "states": [
+                                    {
+                                        "name": "s_count3",
+                                        "val": "0011"
+                                    },
+                                    {
+                                        "name": "s_count4",
+                                        "val": "0100"
+                                    },
+                                    {
+                                        "name": "s_count2",
+                                        "val": "0010"
+                                    },
+                                    {
+                                        "name": "s_count1",
+                                        "val": "0001"
+                                    },
+                                    {
+                                        "name": "s_count0",
+                                        "val": "0000"
+                                    },
+                                    {
+                                        "name": "s_count7",
+                                        "val": "0111"
+                                    },
+                                    {
+                                        "name": "s_count6",
+                                        "val": "0110"
+                                    },
+                                    {
+                                        "name": "s_count8",
+                                        "val": "1000"
+                                    },
+                                    {
+                                        "name": "s_count5",
+                                        "val": "0101"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 24,
+                        "name": "reset_loadB_clearA_IBUF",
+                        "state_reg": [
+                            {
+                                "name": "controlMachine/curr_state_reg[0]",
+                                "states": [
+                                    {
+                                        "name": "s_idle",
+                                        "val": "0000"
+                                    },
+                                    {
+                                        "name": "s_add",
+                                        "val": "0001"
+                                    },
+                                    {
+                                        "name": "s_shift",
+                                        "val": "0010"
+                                    },
+                                    {
+                                        "name": "s_done",
+                                        "val": "0011"
+                                    },
+                                    {
+                                        "name": "s_clear",
+                                        "val": "0100"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

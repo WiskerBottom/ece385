@@ -15,14 +15,22 @@ module multiplier_toplevel   (
 	output logic [7:0]  Bout,
 	output logic        Xval,
 	//temp
-	output logic x_in,
-	output logic m,
+	//output logic x_in,
+	//output logic m,
 	
 	//end temp
 	output logic [3:0]  hex_grid,
 	output logic [7:0]  hex_seg
+	//output logic [3:0] hex_grid2,  // for the second digit anode select
+    //output logic [7:0] hex_seg2    // for the second digit segment outputs
+	
 );
-    logic A_load;  
+//    logic [7:0]  Aout;
+//    logic [7:0]  Bout;
+    logic m;
+    logic x_in;
+    logic A_load; 
+    logic [7:0] sw_i_S; 
 	logic clear_x_a;
 	logic [15:0] AdderResult;
     logic cin;
@@ -34,12 +42,12 @@ module multiplier_toplevel   (
 
     
 
-    two_comp sw_comp(.value(sw_i[7:0]), .two_complement(sw_i_2_comp));
+    two_comp sw_comp(.value(sw_i_S[7:0]), .two_complement(sw_i_2_comp));
 
     logic [7:0] two_complement_mux_out;
     mux #(.DATA_WIDTH(8)) adder_input_mux ( //when C is 1, output A
         .A(sw_i_2_comp[7:0]),
-        .B(sw_i[7:0]),
+        .B(sw_i_S[7:0]),
         .C(m & count[2] & count[1] & count[0] & ~count[3]), //only 1 on 8th count and if m is 1    
         .out(two_complement_mux_out));
 
@@ -54,16 +62,16 @@ module multiplier_toplevel   (
     
 	load_reg #(.DATA_WIDTH(8)) regA (
         .clk(clk), 
-        .reset(reset_loadB_clearA | clear_x_a), 
+        .reset(Reset_SH | clear_x_a), 
         .load(A_load), 
         .shift(shift_en), 
         .serial_in(Xval), 
         .data_i(A_new[7:0]), 
         .data_q(Aout[7:0]));
         
-    load_reg #(.DATA_WIDTH(1)) regX ( //treat this as the 9th bit of reg A
+    load_reg #(.DATA_WIDTH(3)) regX ( //treat this as the 9th bit of reg A
         .clk(clk), 
-        .reset(reset_loadB_clearA | clear_x_a), 
+        .reset(Reset_SH | clear_x_a), 
         .load(A_load), 
         .shift(0), //we dont shift in this household 
         .serial_in(x_in), 
@@ -73,14 +81,47 @@ module multiplier_toplevel   (
     load_reg #(.DATA_WIDTH(8)) regB (
         .clk(clk), 
         .reset(0), //we don't clear in this household 
-        .load(reset_loadB_clearA), 
+        .load(Reset_SH), 
         .shift(shift_en),
         .serial_in(Aout[0]), //shift in LSB of A (since we are kind of treading A+B as a long single number) 
-        .data_i(sw_i[7:0]), 
+        .data_i(sw_i_S[7:0]), 
         .data_q(Bout[7:0]));
+
+	hex_driver HexA (
+		.clk        (clk),
+		.reset      (Reset_SH),
+
+		.in         ({Aout[7:4], Aout[3:0], Bout[7:4], Bout[3:0]}),   //change i think 7:4?
+		.hex_seg    (hex_seg),
+		.hex_grid   (hex_grid));
+
+/*
+	hex_driver HexB (
+		.clk        (clk),
+		.reset      (Reset_SH),
+
+		.in         ({Bout[7:4], Bout[3:0], 4'b0000, 4'b0000}),   //change i think 7:4?
+		.hex_seg    (hex_seg2),
+		.hex_grid   (hex_grid2));
+*/
+
+	sync_debounce button_sync [1:0] (
+		.clk  (clk),
+
+		.d    ({reset_loadB_clearA, run}),
+		.q    ({Reset_SH, run_SH})
+	);
+
+	sync_debounce sw_i_sync [7:0] (    //change 
+		.clk  (clk), 
+
+		.d    (sw_i[7:0]), 
+		.q    (sw_i_S[7:0]) 
+	);
+
 
     ShiftCounter counter(.clk(clk), .reset(reset_loadB_clearA | clear_x_a), .shift_en(shift_en), .ShiftCount(count));
     
-	control controlMachine(.clk(clk), .run(run), .m(m), .reset(reset_loadB_clearA), .counter(count[3:0]), .shift(shift_en), .LoadA(A_load), .clear_x_a(clear_x_a));
+	control controlMachine(.clk(clk), .run(run_SH), .m(m), .reset(reset_loadB_clearA), .counter(count[3:0]), .shift(shift_en), .LoadA(A_load), .clear_x_a(clear_x_a));
 		
 endmodule

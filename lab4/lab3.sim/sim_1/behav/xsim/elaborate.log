@@ -1,6 +1,6 @@
 Vivado Simulator v2022.2
 Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
-Running: /tools/Xilinx/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot testbench_behav xil_defaultlib.testbench xil_defaultlib.glbl -log elaborate.log 
+Running: /tools/Xilinx/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot testbench_behav xil_defaultlib.testbench xil_defaultlib.glbl -log elaborate.log 
 Using 8 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
@@ -9,13 +9,14 @@ WARNING: [VRFC 10-3091] actual bit length 17 differs from formal bit length 16 f
 WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'c_in' [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/select_adder.sv:68]
 WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'c_in' [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/select_adder.sv:20]
 WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'c_in' [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/select_adder.sv:24]
-WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'cin' [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv:49]
-WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'shift' [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv:68]
-WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'reset' [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv:75]
-WARNING: [VRFC 10-3705] select index 1 into 'data_d' is out of bounds [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/load_reg.sv:38]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'cin' [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv:57]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'shift' [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv:76]
+WARNING: [VRFC 10-3091] actual bit length 1 differs from formal bit length 3 for port 'data_i' [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv:78]
+WARNING: [VRFC 10-3091] actual bit length 1 differs from formal bit length 3 for port 'data_q' [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv:79]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'reset' [/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv:83]
 Completed static elaboration
 Starting simulation data flow analysis
-WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv" Line 8. Module multiplier_toplevel doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv" Line 8. Module multiplier_toplevel_default doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/2-1mux.sv" Line 23. Module mux_8_4 doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/2-1mux.sv" Line 23. Module mux_8_4 doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/2-1mux.sv" Line 23. Module mux_8_4 doesn't have a timescale but at least one module in design has a timescale.
@@ -23,11 +24,16 @@ WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/source
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/2-1mux.sv" Line 23. Module mux_8_4 doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/2-1mux.sv" Line 23. Module mux_8_4 doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/load_reg.sv" Line 1. Module load_reg doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/load_reg.sv" Line 1. Module load_reg(DATA_WIDTH=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/load_reg.sv" Line 1. Module load_reg(DATA_WIDTH=3) doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/load_reg.sv" Line 1. Module load_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/hex_driver.sv" Line 1. Module hex_driver_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/hex_driver.sv" Line 11. Module nibble_to_hex doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/hex_driver.sv" Line 11. Module nibble_to_hex doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/hex_driver.sv" Line 11. Module nibble_to_hex doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/hex_driver.sv" Line 11. Module nibble_to_hex doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/ShiftCounter.sv" Line 2. Module ShiftCounter doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/control.sv" Line 3. Module control doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv" Line 8. Module multiplier_toplevel doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/multiplier_toplevel.sv" Line 8. Module multiplier_toplevel_default doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/2-1mux.sv" Line 23. Module mux_8_4 doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/2-1mux.sv" Line 23. Module mux_8_4 doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/2-1mux.sv" Line 23. Module mux_8_4 doesn't have a timescale but at least one module in design has a timescale.
@@ -35,12 +41,19 @@ WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/source
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/2-1mux.sv" Line 23. Module mux_8_4 doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/2-1mux.sv" Line 23. Module mux_8_4 doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/load_reg.sv" Line 1. Module load_reg doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/load_reg.sv" Line 1. Module load_reg(DATA_WIDTH=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/load_reg.sv" Line 1. Module load_reg(DATA_WIDTH=3) doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/load_reg.sv" Line 1. Module load_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/hex_driver.sv" Line 1. Module hex_driver_default doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/hex_driver.sv" Line 11. Module nibble_to_hex doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/hex_driver.sv" Line 11. Module nibble_to_hex doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/hex_driver.sv" Line 11. Module nibble_to_hex doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/hex_driver.sv" Line 11. Module nibble_to_hex doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/imports/design_source/hex_driver.sv" Line 11. Module nibble_to_hex doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/ShiftCounter.sv" Line 2. Module ShiftCounter doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/ece385user/Documents/ece385/lab4/lab3.srcs/sources_1/new/control.sv" Line 3. Module control doesn't have a timescale but at least one module in design has a timescale.
 Completed simulation data flow analysis
 Time Resolution for simulation is 1ps
+Compiling package xil_defaultlib.$unit_2_1mux_sv_1997278911
 Compiling module xil_defaultlib.full_adder
 Compiling module xil_defaultlib.ADDER4
 Compiling module xil_defaultlib.mux_8_4
@@ -49,10 +62,13 @@ Compiling module xil_defaultlib.select_adder
 Compiling module xil_defaultlib.two_comp
 Compiling module xil_defaultlib.mux
 Compiling module xil_defaultlib.load_reg
-Compiling module xil_defaultlib.load_reg(DATA_WIDTH=1)
+Compiling module xil_defaultlib.load_reg(DATA_WIDTH=3)
+Compiling module xil_defaultlib.nibble_to_hex
+Compiling module xil_defaultlib.hex_driver_default
+Compiling module xil_defaultlib.sync_debounce
 Compiling module xil_defaultlib.ShiftCounter
 Compiling module xil_defaultlib.control
-Compiling module xil_defaultlib.multiplier_toplevel
+Compiling module xil_defaultlib.multiplier_toplevel_default
 Compiling module xil_defaultlib.testbench
 Compiling module xil_defaultlib.glbl
 Built simulation snapshot testbench_behav
