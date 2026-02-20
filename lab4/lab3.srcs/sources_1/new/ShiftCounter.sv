@@ -65,6 +65,7 @@ always_comb
 			
 			default begin //we should never get here, as all state combinations are listed above, put to prevent vivado from throwing a hissy fit
 			     next_state = curr_state;
+			     ShiftCount = 4'b0;
 			end
 		endcase
 	end

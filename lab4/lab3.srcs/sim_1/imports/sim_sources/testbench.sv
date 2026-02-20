@@ -107,8 +107,8 @@ initial begin
     reset_loadB_clearA <= 1'b0;
     run <= 1'b0;
     
-    sw_i <= 8'b00000011; //value we are repeatedly adding
-    //sw_i <= 8'b11111111; //value we are repeatedly adding
+    //sw_i <= 8'b00000011; //value we are repeatedly adding
+    sw_i <= 8'b00111011; //59
     
     
     #10
@@ -118,8 +118,8 @@ initial begin
     repeat (20) @(posedge clk);
     reset_loadB_clearA <= 1'b0;
     
-    sw_i <= 8'b00000001;
-    //sw_i <= 8'b11111111;
+    //sw_i <= 8'b00000001;
+    sw_i <= 8'b00000111; //7
 
     
     #10
@@ -131,6 +131,28 @@ initial begin
     
     #60
     
+    //finish 1st calc 59*7
+
+    
+    reset_loadB_clearA <= 1'b0;
+    run <= 1'b0;
+    
+    //sw_i <= 8'b00000011; //value we are repeatedly adding
+    sw_i <= 8'b00111011; //59
+    
+    
+    #10
+    
+    repeat (20) @(posedge clk);
+    reset_loadB_clearA <= 1'b1;
+    repeat (20) @(posedge clk);
+    reset_loadB_clearA <= 1'b0;
+    
+    //sw_i <= 8'b00000001;
+    sw_i <= 8'b11111001; //-7
+
+    
+    #10
     
     repeat (20) @(posedge clk);
     run <= 1'b1;
@@ -138,6 +160,29 @@ initial begin
     run <= 1'b0;
     
     #60
+
+//finish 2nd calc 59*-7
+
+    
+    reset_loadB_clearA <= 1'b0;
+    run <= 1'b0;
+    
+    //sw_i <= 8'b00000011; //value we are repeatedly adding
+    sw_i <= 8'b11000101; //-59
+    
+    
+    #10
+    
+    repeat (20) @(posedge clk);
+    reset_loadB_clearA <= 1'b1;
+    repeat (20) @(posedge clk);
+    reset_loadB_clearA <= 1'b0;
+    
+    //sw_i <= 8'b00000001;
+    sw_i <= 8'b00000111; //7
+
+    
+    #10
     
     repeat (20) @(posedge clk);
     run <= 1'b1;
@@ -145,7 +190,40 @@ initial begin
     run <= 1'b0;
     
     #60
+
+//finish calc 3 -59*7
+
     
+    reset_loadB_clearA <= 1'b0;
+    run <= 1'b0;
+    
+    //sw_i <= 8'b00000011; //value we are repeatedly adding
+    sw_i <= 8'b11000101; //-59
+    
+    
+    #10
+    
+    repeat (20) @(posedge clk);
+    reset_loadB_clearA <= 1'b1;
+    repeat (20) @(posedge clk);
+    reset_loadB_clearA <= 1'b0;
+    
+    //sw_i <= 8'b00000001;
+    sw_i <= 8'b11111001; //-7
+
+    
+    #10
+    
+    repeat (20) @(posedge clk);
+    run <= 1'b1;
+    repeat (20) @(posedge clk);
+    run <= 1'b0;
+    
+    #60
+
+//finish calc 4 -59*-7
+
+        
 	$finish(); //this task will end the simulation if the Vivado settings are properly configured
 
 end

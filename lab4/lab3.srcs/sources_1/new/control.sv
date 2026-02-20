@@ -26,6 +26,11 @@ module control (
 
 	always_comb
 	begin
+	
+	LoadA = 1'b0;
+	LoadB = 1'b0;
+	shift = 1'b0;
+	clear_x_a = 1'b0;
 	// Assign outputs based on 'state'
 		unique case (curr_state) 
 			s_idle: 
