@@ -124,12 +124,15 @@ load_reg #(.DATA_WIDTH(16)) mdr_reg (
 );
 
 busmux BUS (
+    .GateMARMUX(gate_mar_mux),
     .GatePC(gate_pc),
-    .GateALU(gate_alu),         //ask do i have to make it and why is it not in the control 
-    .GateMARMUX(gate_mar_mux),              
+    .GateALU(gate_alu),
     .GateMDR(gate_mdr),
-    .busselect(),
-    .busout(bus)
+    .pc_in(pc[15:0]),
+    .adder_mux_in(16'b0),   //change for lab5.2
+    .alu_in(16'b0), //change for lab5.2)
+    .mdr_in(mdr[15:0]),
+    .busout(bus[15:0])
   
 
 );
@@ -145,7 +148,7 @@ pcmux PCMUX (
 );
 
 mioenmux MIOENMUX(
-    
+
 );
 
 
