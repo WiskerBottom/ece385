@@ -22,7 +22,7 @@
 
 module mioenmux( 
 input logic [15:0] busin,
-input logic [15:0] rdata,
+input logic [15:0] rdata, //why is this here? it is not used anywhere in the code.
 input logic [1:0] mioselect,
 input logic [15:0] cpu_rdata,
 

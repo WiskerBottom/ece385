@@ -58,13 +58,15 @@ logic [1:0] pcmux;
 
 logic [15:0] mar; 
 logic [15:0] mdr;
+logic [15:0] mdr_in;
 logic [15:0] ir;
 logic [15:0] pc;
+logic [15:0] pc_input;
 logic ben;
 logic [15:0] bus;
 
 
-assign mem_addr = mar;
+assign mem_addr = mar; //why are these here????
 assign mem_wdata = mdr;
 
 // State machine, you need to fill in the code here as well
@@ -84,7 +86,7 @@ load_reg #(.DATA_WIDTH(16)) ir_reg (
     .reset  (reset),
 
     .load   (ld_ir),
-    .data_i (),   //i have to figure that out
+    .data_i (bus[15:0]),   //i have to figure that out
 
     .data_q (ir)
 );
@@ -93,8 +95,8 @@ load_reg #(.DATA_WIDTH(16)) pc_reg (
     .clk(clk),
     .reset(reset),
 
-    .load(ld_pc),
-    .data_i(),    //pcmux out
+    .load(ld_pc), //value from control unit, determines if we load on the next rising clock or not
+    .data_i(pc_input),    //this is the input value that the pc will take if loaded, comes from PCMUX
 
     .data_q(pc)
 );
@@ -118,7 +120,7 @@ load_reg #(.DATA_WIDTH(16)) mdr_reg (
     .reset(reset),
 
     .load(ld_mdr),
-    .data_i(),    //output of mioenmux
+    .data_i(mdr_in[15:0]),    //output of mioenmux
 
     .data_q(mdr)
 );
@@ -137,20 +139,34 @@ busmux BUS (
 
 );
 
-pcmux PCMUX (
+pc_mux PCMUX (
     .adderin(16'b0),   //ask ta do we have to make an adder mux 
-    .busin(bus),    
+    .busin(bus[15:0]),    
     .pcin(pc),
-    .select(pcmux),  //this comes fromn the control unit, ask ta how to connext this 
-    .pcmuxout(ld_pc)
+    .select(pcmux),  //this comes fromn the control unit
+    .pcmuxout(pc_input) //writes to pc_input which is the potential next value for the pc register (if control unit tells it to load)
     
     
 );
 
 mioenmux MIOENMUX(
+    .busin(bus[15:0]),
+    .cpu_rdata(mem_rdata[15:0]),
+    .mioselect(mioenmux),
+    .miomuxout(mdr_in[15:0])
+
 
 );
 
+memory MEMORY (
+    .clk(clk),
+    .reset(reset),
+    .data(mdr[15:0]), //if writing to memory, input goes here
+    .address(mar[15:0]), //if writing to memory, address you are writing to goes here
+    .ena(mem_mem_ena), //I think this is general enable (read enable)?
+    .wren(mem_wr_ena), //I think this is write enable?
+    .readout(mem_rdata) //data output, used when reading
+);
 
 
 

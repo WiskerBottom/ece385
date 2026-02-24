@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module pcmux(   //ask ca for select will it get confused
+module pc_mux(   //ask ca for select will it get confused, I changed this because I will get confused lol <- lucas
     input logic [15:0] adderin, 
     input logic [15:0] busin,  
     input logic [15:0] pcin, 
@@ -30,7 +30,7 @@ module pcmux(   //ask ca for select will it get confused
     
 always_comb begin
     case(pcselect)
-    2'b00 : pcmuxout = pcin +1;     //not recommended 
+    2'b00 : pcmuxout = pcin+1;     //not recommended 
     2'b01 : pcmuxout = busin;
     2'b10 : pcmuxout = adderin;
     endcase 

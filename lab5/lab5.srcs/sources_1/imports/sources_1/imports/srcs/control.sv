@@ -83,6 +83,11 @@ module control (
 		ld_pc = 1'b0;
 		ld_led = 1'b0;
 		
+		//changed from default
+		mem_mem_ena = 1'b0; // I did not name this, blame whoever wrote the default code
+		mem_wr_ena = 1'b0;
+		//end changes
+		
 		gate_pc = 1'b0;   
 		gate_mdr = 1'b0;  
 		 
@@ -100,9 +105,11 @@ module control (
 					ld_pc = 1'b1;
 				end
 			s_33_1, s_33_2, s_33_3 : //you may have to think about this as well to adapt to ram with wait-states
+			//I think there are 3 states because it can take multiple clock cycles for ram to respond to us?
 				begin
 					mem_mem_ena = 1'b1;
 					ld_mdr = 1'b1;
+					// I think we will need to add a output to set MIO.EN, cause we need that to write to MDR
 				end
 			s_35 : 
 				begin 
@@ -134,7 +141,7 @@ module control (
 			s_33_2 :
 				state_nxt = s_33_3;
 			s_33_3 : 
-				state_nxt = s_35;
+				state_nxt = s_35; //we need to not exit state 33 until the r button is pressed, we are not doing that right now
 			s_35 : 
 				state_nxt = pause_ir1;
 			// pause_ir1 and pause_ir2 are only for week 1 such that TAs can see 
