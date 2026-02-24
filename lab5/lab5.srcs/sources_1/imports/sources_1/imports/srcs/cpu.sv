@@ -107,7 +107,7 @@ load_reg #(.DATA_WIDTH(16)) mar_reg (
     .reset(reset),
 
     .load(ld_mar),
-    .data_i(),    ///busoutput 
+    .data_i(bus),    ///busoutput 
 
     .data_q(mar)   
 );
@@ -141,6 +141,10 @@ pcmux PCMUX (
     .select(pcmux),  //this comes fromn the control unit, ask ta how to connext this 
     .pcmuxout(ld_pc)
     
+    
+);
+
+mioenmux MIOENMUX(
     
 );
 

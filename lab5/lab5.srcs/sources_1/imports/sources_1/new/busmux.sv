@@ -21,23 +21,26 @@
 
 
 module busmux(
-input logic [15:0] GateMARMUX,
-input logic [15:0] GatePC,
-input logic [15:0] GateALU,
-input logic [15:0] GateMDR,
-input logic [3:0] busselect,
+input logic [1:0] GateMARMUX,
+input logic [1:0] GatePC,
+input logic [1:0] GateALU,
+input logic [1:0] GateMDR,
+input logic [
+
+    
+//input logic [3:0] busselect,        //remove 
 
 output logic [15:0] busout
     );
     
 
 always_comb begin
-    case(busselect)
-    4'b0000: busout = GatePC;
-    4'b0001: busout = GateMARMUX;
-    4'b0010: busout = GateALU;
-    4'b0100: busout = busselect;
-    endcase 
+   case({GatePC, GateMARMUX, GateALU, GateMDR})
+    4'b1000: busout = pc 
+    4'b0100: 
+   
+
+    endcase
 end 
     
     
