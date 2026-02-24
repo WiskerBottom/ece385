@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 02/09/2026 06:14:57 PM
+// Create Date: 02/24/2026 01:07:53 PM
 // Design Name: 
-// Module Name: 2-1_mux
+// Module Name: mioenmux
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,10 +20,20 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module 2-1_mux(
-    input A,
-    input B,
-    input C,
-    output out
+module mioenmux( 
+input logic [15:0] busin,
+input logic [15:0] rdata,
+input logic [1:0] mioselect,
+
+output logic [15:0] miomuxout 
     );
+    
+always_comb begin
+    case(mioselect)
+    2'b00: miomuxout = busin;
+    2'b01: miomuxout = rdata;
+    endcase
+   
+end
+    
 endmodule

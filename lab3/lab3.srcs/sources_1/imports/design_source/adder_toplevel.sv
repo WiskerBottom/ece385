@@ -15,14 +15,14 @@ module adder_toplevel   (
 	output logic [7:0]  hex_seg_a,
 	output logic [3:0]  hex_grid_a,
 	output logic [7:0]  hex_seg_b,
-	output logic [3:0]  hex_grid_b
+	output logic [3:0]  hex_grid_b,
+	output logic [16:0] out
 );
 
 	// Declare temporary values used by other modules
 	logic load;
 	//Out;
 	logic [16:0] s;
-	logic [16:0] out;
 	
 	// Synchronized inputs (denoted by _s in naming convention)
 	logic run_s;
@@ -49,16 +49,18 @@ module adder_toplevel   (
 		.data_q   	(out)
 	);
 
-	// Addition unit
-	//ripple_adder adder_ra (
-	//	.a	 	(sw_s), 
-	//	.b	 	(out[15:0]), 
-	//	.cin 	(1'b0), 
-	//	.cout	(s[16]), 
-	//	.s   	(s[15:0]) 
-	//);
+	 //Addition unit
+	
+	ripple_adder adder_ra (
+		.a	 	(sw_s), 
+		.b	 	(out[15:0]), 
+		.cin 	(1'b0), 
+		.cout	(s[16]), 
+		.s   	(s[15:0]) 
+	);
 	
 	
+	/*
 	 lookahead_adder adder_la (		
     	.a	 	(sw_s), 
     	.b	 	(out[15:0]), 
@@ -67,17 +69,19 @@ module adder_toplevel   (
     	.s   	(s[15:0]) 
 	 );
 	 
-	 	
-	/*
-	select_adder adder_sa (	
+	*/
+	 
+	 /*
+	 select_adder adder_sa (	
 	 	.a	 	(sw_s), 
 	 	.b	 	(out[15:0]), 
 	 	.cin 	(1'b0), 
 	 	.cout	(s[16]), 
 	 	.s   	(s[15:0]) 
-	);
-    */
-
+	 );
+     */
+   
+    
 	// Hex units that display contents of sw and sum register in hex
 	hex_driver hex_a (
 		.clk		(clk),
