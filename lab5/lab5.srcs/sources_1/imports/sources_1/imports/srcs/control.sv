@@ -41,6 +41,8 @@ module control (
 						
 	output logic		gate_pc,
 	output logic		gate_mdr,
+	output logic        gate_alu,      //i added this 
+	output logic        gate_mar_mux,  //i added this 
 	
 						
 	output logic [1:0]	pcmux,

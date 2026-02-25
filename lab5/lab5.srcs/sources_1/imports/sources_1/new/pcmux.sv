@@ -30,7 +30,7 @@ module pc_mux(   //ask ca for select will it get confused, I changed this becaus
     
 always_comb begin
     case(pcselect)
-    2'b00 : pcmuxout = pcin+1;     //not recommended 
+    2'b00 : pcmuxout = pcin+1;    
     2'b01 : pcmuxout = busin;
     2'b10 : pcmuxout = adderin;
     endcase 

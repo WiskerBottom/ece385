@@ -66,7 +66,7 @@ logic ben;
 logic [15:0] bus;
 
 
-assign mem_addr = mar; //why are these here????
+assign mem_addr = mar; //why are these here they put it here not me 
 assign mem_wdata = mdr;
 
 // State machine, you need to fill in the code here as well
@@ -86,7 +86,7 @@ load_reg #(.DATA_WIDTH(16)) ir_reg (
     .reset  (reset),
 
     .load   (ld_ir),
-    .data_i (bus[15:0]),   //i have to figure that out
+    .data_i (bus[15:0]),   //comes from the bus 
 
     .data_q (ir)
 );
@@ -151,22 +151,24 @@ pc_mux PCMUX (
 
 mioenmux MIOENMUX(
     .busin(bus[15:0]),
-    .cpu_rdata(mem_rdata[15:0]),
-    .mioselect(mioenmux),
+    .cpu_rdata(mem_rdata[15:0]),    //might change
+    .mioselect(mem_mem_ena),           //i changed this to mem enable
     .miomuxout(mdr_in[15:0])
 
 
 );
 
-memory MEMORY (
-    .clk(clk),
-    .reset(reset),
-    .data(mdr[15:0]), //if writing to memory, input goes here
-    .address(mar[15:0]), //if writing to memory, address you are writing to goes here
-    .ena(mem_mem_ena), //I think this is general enable (read enable)?
-    .wren(mem_wr_ena), //I think this is write enable?
-    .readout(mem_rdata) //data output, used when reading
-);
+//memory MEMORY (
+//    .clk(clk),
+//    .reset(reset),
+//    .data(mdr[15:0]), //if writing to memory, input goes here
+//    .address(mar[15:0]), //if writing to memory, address you are writing to goes here
+//    .ena(mem_mem_ena), //I think this is general enable (read enable)?
+//    .wren(mem_wr_ena), //I think this is write enable?
+//    .readout(mem_rdata) //data output, used when reading
+//); they already did that for us 
+
+
 
 
 
