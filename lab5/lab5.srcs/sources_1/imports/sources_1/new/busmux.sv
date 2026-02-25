@@ -21,10 +21,10 @@
 
 
 module busmux(
-input logic [1:0] GateMARMUX,
-input logic [1:0] GatePC,
-input logic [1:0] GateALU,
-input logic [1:0] GateMDR,
+input logic  GateMARMUX,
+input logic  GatePC,
+input logic  GateALU,
+input logic  GateMDR,
 input logic [15:0] pc_in,
 input logic [15:0] adder_mux_in,
 input logic [15:0] alu_in,

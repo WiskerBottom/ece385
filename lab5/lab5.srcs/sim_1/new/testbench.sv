@@ -31,26 +31,31 @@ always begin: CLOCK_GENERATION
 end
 
 initial begin 
-
-reset = 1;
-
-#10;
-
-reset = 0;
-
-#100
-
-continue_i <= 1;
-
-#10
-
-continue_i <= 0;
-
-#100
-
-
-
-$finish();
+    continue_i <= 0;
+    reset = 1;
+    run_i <= 0;
+    #10;
+    
+    reset = 0;
+    
+    #10
+    run_i <= 1;
+    #10
+    run_i <= 0;
+    
+    #100
+    
+    continue_i <= 1;
+    
+    #10
+    
+    continue_i <= 0;
+    
+    #100
+    
+    
+    
+    $finish();
 
 end 
 endmodule

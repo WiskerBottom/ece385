@@ -88,6 +88,8 @@ module control (
 		//changed from default
 		mem_mem_ena = 1'b0; // I did not name this, blame whoever wrote the default code
 		mem_wr_ena = 1'b0;
+		gate_alu = 1'b0;
+		gate_mar_mux = 1'b0;
 		//end changes
 		
 		gate_pc = 1'b0;   

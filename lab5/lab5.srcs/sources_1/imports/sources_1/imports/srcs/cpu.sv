@@ -143,7 +143,7 @@ pc_mux PCMUX (
     .adderin(16'b0),   //ask ta do we have to make an adder mux 
     .busin(bus[15:0]),    
     .pcin(pc),
-    .select(pcmux),  //this comes fromn the control unit
+    .pcselect(pcmux),  //this comes fromn the control unit
     .pcmuxout(pc_input) //writes to pc_input which is the potential next value for the pc register (if control unit tells it to load)
     
     

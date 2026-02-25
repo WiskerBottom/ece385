@@ -29,6 +29,7 @@ module pc_mux(   //ask ca for select will it get confused, I changed this becaus
     );
     
 always_comb begin
+    pcmuxout = 16'b0;
     case(pcselect)
     2'b00 : pcmuxout = pcin+1;    
     2'b01 : pcmuxout = busin;
