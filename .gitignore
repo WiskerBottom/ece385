@@ -2,6 +2,11 @@
 #  Vivado  #
 ############
 
+lab5/lab5.srcs/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0.xci
+*/blk_mem_gen_0.xci
+lab5/lab5.srcs/sources_1/ip/*
+
+
 ## log files
 *.log
 *.jou
