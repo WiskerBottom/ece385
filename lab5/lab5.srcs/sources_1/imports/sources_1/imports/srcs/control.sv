@@ -52,8 +52,9 @@ module control (
 	output logic      [1:0] aluk, 
 	output logic      [1:0] addr1_mux_select,    
 	output logic      [1:0] addr2_mux_select,    
-						
-	output logic [1:0]	pcmux,
+	output logic        mioenmux,
+	output logic [1:0]	pcmux_select,
+	output logic        ld_cc,
 	
 	//You should add additional control signals according to the SLC-3 datapath design
 
@@ -79,6 +80,9 @@ module control (
 		s_25_1,
 		s_25_2,
 		s_25_3,
+		s_16_1,
+		s_16_2,
+		s_16_3,
 		s_27,
 		s_7,
 		s_23,
@@ -126,8 +130,9 @@ module control (
 		
 		gate_pc = 1'b0;   
 		gate_mdr = 1'b0;  
+		ld_cc = 1'b0;
 		 
-		pcmux = 2'b00;
+		pcmux_select = 2'b00;
 		
 	
 		// Assign relevant control signals based on current state
@@ -137,7 +142,7 @@ module control (
 				begin 
 					gate_pc = 1'b1;
 					ld_mar = 1'b1;
-					pcmux = 2'b00;
+					pcmux_select = 2'b00;
 					ld_pc = 1'b1;
 				end
 			s_33_1, s_33_2, s_33_3 : //you may have to think about this as well to adapt to ram with wait-states
@@ -145,6 +150,7 @@ module control (
 				begin
 					mem_mem_ena = 1'b1;
 					ld_mdr = 1'b1;
+					mioenmux = 1'b1; //sets MDR to load from memory
 					// I think we will need to add a output to set MIO.EN, cause we need that to write to MDR
 				end
 			s_35 : 
@@ -156,7 +162,7 @@ module control (
 			pause_ir2: ld_led = 1'b1; 
 			// you need to finish the rest of state output logic..... 
 			//things i added//  
-			s_1:
+			s_1: //AND
                 if(ir[5] == 1'b0)
                         begin
                              gate_alu = 1'b1;
@@ -175,8 +181,8 @@ module control (
                           ld_regfile = 1'b1;
                           aluk= 2'b00;
                      end 
-             s_5:
-             if(ir[5] == 1'b0)
+             s_5: //NOT
+                if(ir[5] == 1'b0)
                         begin
                              gate_alu = 1'b1;
                              dr_select = 2'b00;
@@ -185,7 +191,7 @@ module control (
                              ld_regfile = 1'b1;
                              aluk = 2'b01;
                         end 
-             else
+                else
                      begin 
                           gate_alu = 1'b1;
                           dr_select = 2'b00;
@@ -195,8 +201,8 @@ module control (
                           aluk= 2'b01;
                      end 
                      
-            s_9:
-            if(ir[5] == 1'b0)
+            s_9: //NOT
+                if(ir[5] == 1'b0)
                         begin
                              gate_alu = 1'b1;
                              dr_select = 2'b00;
@@ -205,7 +211,7 @@ module control (
                              ld_regfile = 1'b1;
                              aluk = 2'b10;
                         end 
-             else
+                else
                      begin 
                           gate_alu = 1'b1;
                           dr_select = 2'b00;
@@ -215,7 +221,7 @@ module control (
                           aluk= 2'b10;
                      end 
               
-              s_6:
+              s_6: //LDR Part 1
               begin
                   gate_mar_mux = 1'b1;
                   dr_select = 2'b00;
@@ -224,17 +230,72 @@ module control (
                   addr2_mux_select = 2'b10;
               end
               
-              s_25_1, s_25_2, s_25_3:
+              s_25_1, s_25_2, s_25_3: //LDR Part 2
+              begin				
+					mem_mem_ena = 1'b1;
+					ld_mdr = 1'b1;
+					mioenmux = 1'b1; //sets MDR to load from memory
+					// I think we will need to add a output to set MIO.EN, cause we need that to write to MDR
+			  end
+			  
+			  s_27: //LDR Part 3
+			  begin
+			     dr_select = 2'b00; //select IR[11:9] as DR
+			     gate_mdr = 1'b1;
+			     ld_cc = 1'b1;
+			  end
+                
+
+              s_7: //STR Part 1
+              begin //stolen from s_6 (they are the same)
+                  gate_mar_mux = 1'b1;
+                  dr_select = 2'b00;
+                  sr1_select = 2'b01;
+                  addr1_mux_select = 2'b00;
+                  addr2_mux_select = 2'b10;
+              end
+              
+              s_23: //STR Part 2
+              begin				
+                    sr1_select = 2'b00; //Sets SR_1 to IR[11:9] 
+                    aluk = 2'b11; //Pass SR_1 on with no modifications on to BUS
+					ld_mdr = 1'b1;
+					mioenmux = 1'b0; //sets MDR to load from BUS
+			  end
+			  
+			  s_16_1, s_16_2, s_16_3: //STR Part 3
+			  begin
+			     mem_wr_ena = 1'b1; //tell the memory we are about to write
+			     //I think that is literally it.
+			  end
+			  
+			  s_4: //JSR
+              begin				
+                   dr_select = 2'b01; //ignore whatever IR is for DR and use register 7
+                   gate_pc = 1'b0; //get PC onto the bus
+                   ld_regfile = 1'b1; //allow regfile to load
+			  end
+			  
+			  s_21: //JSR
+              begin				
+                   addr1_mux_select = 2'b01; //pass PC to adder
+                   gate_pc = 1'b0; //get PC onto the bus
+                   ld_pc = 1'b1; //allow pc to update with result from adder
+                   addr2_mux_select = 2'b00; //pass SEXT IR[10:0] to adder
+			  end			  
+              
+              s_12: //jmp
               begin
-                
-                
-              
-              
+                    sr1_select = 2'b01;
+                    aluk = 2'b11; //Pass SR_1 on with no modifications on to BUS
+                    pcmux_select = 2'b01; //BUS value passes through mux
+                    ld_pc = 1'b0;
+              end
               
             
       
 
-			default : ;
+			default ;
 		endcase
 	end 
 
@@ -294,6 +355,7 @@ module control (
 			s_6:
 			 state_nxt = s_25_1;
 			s_25_1:
+			     
 			     
 			 
 			

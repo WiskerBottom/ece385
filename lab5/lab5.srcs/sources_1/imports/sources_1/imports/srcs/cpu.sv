@@ -54,7 +54,7 @@ logic gate_mdr;
 logic gate_alu;  //i added this 
 logic gate_mar_mux; 
 
-logic [1:0] pcmux; 
+logic [1:0] pcmux_select; 
 
 logic [15:0] mar; 
 logic [15:0] mdr;
@@ -176,7 +176,7 @@ pc_mux PCMUX (
     .adderin(addr_adder),   //ask ta do we have to make an adder mux 
     .busin(bus[15:0]),    
     .pcin(pc),
-    .pcselect(pcmux),  //this comes fromn the control unit
+    .pcselect(pcmux_select),  //this comes fromn the control unit
     .pcmuxout(pc_input) //writes to pc_input which is the potential next value for the pc register (if control unit tells it to load)
     
     
@@ -239,7 +239,7 @@ Reg_File reg_file(
 );
 
 
-MUX  #(.DATA_WIDTH(16)) ALU(
+MUX  #(.DATA_WIDTH(16)) ALU( //99% sure this should be ALU instance instead of a mux instance
     .data_1(sr1_out),
     .data_2(sr2_mux_out),
     .data_3(),  //might be error 
