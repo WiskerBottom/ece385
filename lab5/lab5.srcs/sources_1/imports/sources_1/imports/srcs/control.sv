@@ -49,7 +49,9 @@ module control (
 	output logic      [1:0]  sr1_select,
 	output logic      [1:0]  sr2_select,
 	output logic        ld_regfile,
-	
+	output logic      [1:0] aluk, 
+	output logic      [1:0] addr1_mux_select,    
+	output logic      [1:0] addr2_mux_select,    
 						
 	output logic [1:0]	pcmux,
 	
@@ -74,7 +76,9 @@ module control (
 		s_5,
 		s_9,
 		s_6,
-		s_25,
+		s_25_1,
+		s_25_2,
+		s_25_3,
 		s_27,
 		s_7,
 		s_23,
@@ -160,6 +164,7 @@ module control (
                              sr1_select = 2'b01;
                              sr2_select = 2'b00;
                              ld_regfile = 1'b1;
+                             aluk = 2'b00;
                         end 
                 else
                      begin 
@@ -168,12 +173,66 @@ module control (
                           sr1_select = 2'b01;
                           sr2_select = 2'b01;
                           ld_regfile = 1'b1;
+                          aluk= 2'b00;
                      end 
-                 
-			     
-			  
-			       
-			        
+             s_5:
+             if(ir[5] == 1'b0)
+                        begin
+                             gate_alu = 1'b1;
+                             dr_select = 2'b00;
+                             sr1_select = 2'b01;
+                             sr2_select = 2'b00;
+                             ld_regfile = 1'b1;
+                             aluk = 2'b01;
+                        end 
+             else
+                     begin 
+                          gate_alu = 1'b1;
+                          dr_select = 2'b00;
+                          sr1_select = 2'b01;
+                          sr2_select = 2'b01;
+                          ld_regfile = 1'b1;
+                          aluk= 2'b01;
+                     end 
+                     
+            s_9:
+            if(ir[5] == 1'b0)
+                        begin
+                             gate_alu = 1'b1;
+                             dr_select = 2'b00;
+                             sr1_select = 2'b01;
+                             sr2_select = 2'b00;
+                             ld_regfile = 1'b1;
+                             aluk = 2'b10;
+                        end 
+             else
+                     begin 
+                          gate_alu = 1'b1;
+                          dr_select = 2'b00;
+                          sr1_select = 2'b01;
+                          sr2_select = 2'b01;
+                          ld_regfile = 1'b1;
+                          aluk= 2'b10;
+                     end 
+              
+              s_6:
+              begin
+                  gate_mar_mux = 1'b1;
+                  dr_select = 2'b00;
+                  sr1_select = 2'b01;
+                  addr1_mux_select = 2'b00;
+                  addr2_mux_select = 2'b10;
+              end
+              
+              s_25_1, s_25_2, s_25_3:
+              begin
+                
+                
+              
+              
+              
+            
+      
 
 			default : ;
 		endcase
@@ -210,7 +269,7 @@ module control (
 			// you need to finish the rest of state transition logic.....
 			
 			s_32:
-			     case(ir[15:12])
+			    unique case(ir[15:12])
 			         4'b0001: state_nxt = s_1;
 			         4'b0101: state_nxt = s_5;
 			         4'b1001: state_nxt = s_9;
@@ -220,7 +279,22 @@ module control (
 			         4'b0110: state_nxt = s_6;
 			         4'b0111: state_nxt = s_7;
 			         4'b1101: state_nxt = pause_ir1;
+			         default: state_nxt = s_18;
 			     endcase
+			     
+			s_1:
+			 state_nxt = s_18;
+		
+		    s_5:
+			 state_nxt = s_18;
+		    
+		    s_9:
+			 state_nxt = s_18;
+			
+			s_6:
+			 state_nxt = s_25_1;
+			s_25_1:
+			     
 			 
 			
 			default :;
