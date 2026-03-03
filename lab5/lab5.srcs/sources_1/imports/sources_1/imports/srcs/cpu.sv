@@ -64,7 +64,21 @@ logic [15:0] pc;
 logic [15:0] pc_input;
 logic ben;
 logic [15:0] bus;
+logic dr_select;
+logic [2:0] dr_mux_out;
+logic sr1_select;
+logic [2:0] sr1_mux_out;
+logic [15:0] sr1_out;
+logic [15:0] sr2_out;
+logic addr1_mux_select;
+logic [15:0] addr1_mux_out;
+logic [2:0] addr2_mux_select;
+logic [15:0] addr2_mux_out;
 
+logic ld_regfile;
+
+logic ld_cc;
+logic [2:0] nzp;
 
 assign mem_addr = mar; //why are these here they put it here not me 
 assign mem_wdata = mdr;
@@ -125,14 +139,33 @@ load_reg #(.DATA_WIDTH(16)) mdr_reg (
     .data_q(mdr)
 );
 
+
+always_comb
+    if(bus[15] == 1'b1)
+        nzp = 3'b100;
+    else if(bus[15:0] == 16'b0)
+        nzp = 3'b010;
+    else
+        nzp = 3'b001;
+
+load_reg #(.DATA_WIDTH(3)) nzp_reg (
+    .clk    (clk),
+    .reset  (reset),
+
+    .load   (ld_cc),
+    .data_i (nzp),   
+
+    .data_q (nzp_out)
+);
+
 busmux BUS (
     .GateMARMUX(gate_mar_mux),
     .GatePC(gate_pc),
     .GateALU(gate_alu),
     .GateMDR(gate_mdr),
     .pc_in(pc[15:0]),
-    .adder_mux_in(16'b0),   //change for lab5.2
-    .alu_in(16'b0), //change for lab5.2)
+    .adder_mux_in(addr_adder),   //change for lab5.2
+    .alu_in(alu_out), //change for lab5.2)
     .mdr_in(mdr[15:0]),
     .busout(bus[15:0])
   
@@ -140,7 +173,7 @@ busmux BUS (
 );
 
 pc_mux PCMUX (
-    .adderin(16'b0),   //ask ta do we have to make an adder mux 
+    .adderin(addr_adder),   //ask ta do we have to make an adder mux 
     .busin(bus[15:0]),    
     .pcin(pc),
     .pcselect(pcmux),  //this comes fromn the control unit
@@ -157,6 +190,90 @@ mioenmux MIOENMUX(
 
 
 );
+
+
+MUX  #(.DATA_WIDTH(3), .DATA_SELECT(1)) dr_mux(
+    .data_1(ir[11:9]),
+    .data_2(3'b111),
+    .data_3(),  //might be error 
+    .data_4(),
+    .muxselect(dr_select),   //add it to control
+    .data_out(dr_mux_out)
+
+);
+
+
+MUX  #(.DATA_WIDTH(3), .DATA_SELECT(1)) SR1_mux(
+    .data_1(ir[11:9]),
+    .data_2(ir[8:6]),
+    .data_3(),  //might be error 
+    .data_4(),
+    .muxselect(sr1_select),   //add it to control
+    .data_out(sr1_mux_out)
+
+);
+
+
+MUX  #(.DATA_WIDTH(16)) SR2_mux(
+    .data_1(sr2_out),
+    .data_2({{12{ir[3]}},ir[3:0]}),
+    .data_3(),  //might be error 
+    .data_4(),
+    .muxselect(sr2_select),   //add it to control
+    .data_out(sr2_mux_out)
+
+);
+
+
+Reg_File reg_file(
+    .dr_in(dr_mux_out),
+    .busin(bus[15:0]),
+    .sr1(sr1_mux_out),
+    .sr2(ir[2:0]),
+    .reset(reset),
+    .clk(clk),
+    .sr1_out(sr1_out),
+    .sr2_out(sr2_out),
+    .ld_regfile(ld_regfile)
+
+);
+
+
+MUX  #(.DATA_WIDTH(16)) ALU(
+    .data_1(sr1_out),
+    .data_2(sr2_mux_out),
+    .data_3(),  //might be error 
+    .data_4(),
+    .muxselect(aluk),   //add it to control
+    .data_out(alu_out)
+
+);
+
+
+
+MUX  #(.DATA_WIDTH(16)) ADDR1MUX(
+    .data_1(sr1_out),
+    .data_2(pc),
+    .data_3(),  //might be error 
+    .data_4(),
+    .muxselect(addr1_mux_select),   //add it to control
+    .data_out(addr1_mux_out)
+
+);
+
+
+
+MUX  #(.DATA_WIDTH(16)) ADDR2MUX(
+    .data_1({{5{ir[10]}},ir[10:0]}),
+    .data_2({{7{ir[8]}},ir[8:0]}),
+    .data_3({{10{ir[5]}},ir[5:0]}),  //might be error 
+    .data_4(16'b0),
+    .muxselect(addr2_mux_select),   //add it to control
+    .data_out(addr2_mux_out)
+
+);
+
+assign addr_adder = addr2_mux_out + addr1_mux_out;
 
 //memory MEMORY (
 //    .clk(clk),

@@ -38,11 +38,17 @@ module control (
 	output logic		ld_ir,
 	output logic		ld_pc,
 	output logic        ld_led,
+	output logic        ld_ben,
+
 						
 	output logic		gate_pc,
 	output logic		gate_mdr,
 	output logic        gate_alu,      //i added this 
 	output logic        gate_mar_mux,  //i added this 
+	output logic      [1:0]  dr_select,
+	output logic      [1:0]  sr1_select,
+	output logic      [1:0]  sr2_select,
+	output logic        ld_regfile,
 	
 						
 	output logic [1:0]	pcmux,
@@ -53,7 +59,7 @@ module control (
 	output logic		mem_wr_ena  // Mem Write Enable
 );
 
-	enum logic [4:0] {
+	enum logic [19:0] {
 		halted, 
 		pause_ir1,
 		pause_ir2, 
@@ -61,7 +67,24 @@ module control (
 		s_33_1,
 		s_33_2,
 		s_33_3,
-		s_35
+		s_35,
+		//things i added//
+		s_32,
+		s_1,
+		s_5,
+		s_9,
+		s_6,
+		s_25,
+		s_27,
+		s_7,
+		s_23,
+		s_16,
+		s_0,
+		s_22,
+		s_12,
+		s_4,
+		s_21
+		
 	} state, state_nxt;   // Internal state logic
 
 
@@ -90,6 +113,11 @@ module control (
 		mem_wr_ena = 1'b0;
 		gate_alu = 1'b0;
 		gate_mar_mux = 1'b0;
+		ld_ben = 1'b0;
+		sr1_select = 2'b00;
+		sr2_select = 2'b00;
+		dr_select = 2'b00;
+		ld_regfile = 1'b0;
 		//end changes
 		
 		gate_pc = 1'b0;   
@@ -123,6 +151,29 @@ module control (
 			pause_ir1: ld_led = 1'b1; 
 			pause_ir2: ld_led = 1'b1; 
 			// you need to finish the rest of state output logic..... 
+			//things i added//  
+			s_1:
+                if(ir[5] == 1'b0)
+                        begin
+                             gate_alu = 1'b1;
+                             dr_select = 2'b00;
+                             sr1_select = 2'b01;
+                             sr2_select = 2'b00;
+                             ld_regfile = 1'b1;
+                        end 
+                else
+                     begin 
+                          gate_alu = 1'b1;
+                          dr_select = 2'b00;
+                          sr1_select = 2'b01;
+                          sr2_select = 2'b01;
+                          ld_regfile = 1'b1;
+                     end 
+                 
+			     
+			  
+			       
+			        
 
 			default : ;
 		endcase
@@ -147,7 +198,7 @@ module control (
 			s_33_3 : 
 				state_nxt = s_35; //we need to not exit state 33 until the r button is pressed, we are not doing that right now
 			s_35 : 
-				state_nxt = pause_ir1;
+				state_nxt = s_32;
 			// pause_ir1 and pause_ir2 are only for week 1 such that TAs can see 
 			// the values in ir.
 			pause_ir1 : 
@@ -157,6 +208,20 @@ module control (
 				if (~continue_i)
 					state_nxt = s_18;
 			// you need to finish the rest of state transition logic.....
+			
+			s_32:
+			     case(ir[15:12])
+			         4'b0001: state_nxt = s_1;
+			         4'b0101: state_nxt = s_5;
+			         4'b1001: state_nxt = s_9;
+			         4'b0000: state_nxt = s_0;
+			         4'b1100: state_nxt = s_12;
+			         4'b0100: state_nxt = s_4;
+			         4'b0110: state_nxt = s_6;
+			         4'b0111: state_nxt = s_7;
+			         4'b1101: state_nxt = pause_ir1;
+			     endcase
+			 
 			
 			default :;
 		endcase
