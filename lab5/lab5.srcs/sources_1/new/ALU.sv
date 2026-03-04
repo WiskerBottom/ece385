@@ -23,7 +23,7 @@
 module ALU(
 input logic [15:0] sr1_out,
 input logic [15:0] sr2_mux_out,
-input logic [2:0] aluk,
+input logic [1:0] aluk,
 
 output logic [15:0] alu_out
     );

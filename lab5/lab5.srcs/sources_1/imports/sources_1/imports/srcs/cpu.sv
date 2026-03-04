@@ -45,7 +45,6 @@ logic ld_ir;
 logic ld_pc; 
 logic ld_led;
 
-logic busmux; //i have to make a bus mux that is going to be a 2:4 mux 
 logic mioenmux; //i have to make a 2:1 mux 
 
 logic gate_pc;
@@ -55,7 +54,6 @@ logic gate_alu;  //i added this
 logic gate_mar_mux; 
 
 logic [1:0] pcmux_select; 
-
 logic [15:0] mar; 
 logic [15:0] mdr;
 logic [15:0] mdr_in;
@@ -72,13 +70,20 @@ logic [15:0] sr1_out;
 logic [15:0] sr2_out;
 logic addr1_mux_select;
 logic [15:0] addr1_mux_out;
-logic [2:0] addr2_mux_select;
+logic [1:0] addr2_mux_select;
 logic [15:0] addr2_mux_out;
+logic [1:0] aluk;
+logic [15:0] alu_out;
+logic [15:0] addr_adder;
+logic [15:0] sr2_mux_out;
+logic ld_ben;
+logic ben_out;
 
 logic ld_regfile;
 
 logic ld_cc;
 logic [2:0] nzp;
+logic [2:0] nzp_out;
 
 assign mem_addr = mar; //why are these here they put it here not me 
 assign mem_wdata = mdr;
@@ -92,7 +97,7 @@ control cpu_control (
 );
 
 
-assign led_o = ir;
+
 assign hex_display_debug = ir;
 
 load_reg #(.DATA_WIDTH(16)) ir_reg (
@@ -140,16 +145,26 @@ load_reg #(.DATA_WIDTH(16)) mdr_reg (
 );
 
 
-assign ben = (ir[11] & nzp_out) | (ir[10] & nzp_out) | (ir[9] & nzp_out);
+assign ben = ((ir[11] && nzp_out[2]) || (ir[10] && nzp_out[1]) || (ir[9] && nzp_out[0])) | (nzp_out == 3'b000);
+//assign led_o[0] = ben_out;
+//assign led_o[3:1] = nzp_out;
+//assign led_o = ir;
+assign led_o = bus;
+//assign ben = 1'b1;
+
+
 
 always_comb
 begin
-    if(bus[15] == 1'b1)
+     
+    if(bus[15] == 1'b1) begin
         nzp = 3'b100;
-    else if(bus[15:0] == 16'b0)
+    end else if(bus[15:0] == 16'b0) begin
         nzp = 3'b010;
-    else
+    end else begin
         nzp = 3'b001;
+    end
+    
 end 
 
 load_reg #(.DATA_WIDTH(3)) nzp_reg (
@@ -160,6 +175,17 @@ load_reg #(.DATA_WIDTH(3)) nzp_reg (
     .data_i (nzp),   
 
     .data_q (nzp_out)
+);
+
+
+load_reg #(.DATA_WIDTH(3)) BEN (
+    .clk    (clk),
+    .reset  (reset),
+
+    .load   (ld_ben),
+    .data_i (ben),   
+
+    .data_q (ben_out)
 );
 
 busmux BUS (
@@ -243,13 +269,11 @@ Reg_File reg_file(
 );
 
 
-MUX  #(.DATA_WIDTH(16)) ALU( //99% sure this should be ALU instance instead of a mux instance
-    .data_1(sr1_out),
-    .data_2(sr2_mux_out),
-    .data_3(),  //might be error 
-    .data_4(),
-    .muxselect(aluk),   //add it to control
-    .data_out(alu_out)
+ALU ALU0( //99% sure this should be ALU instance instead of a mux instance
+    .sr1_out(sr1_out),
+    .sr2_mux_out(sr2_mux_out),
+    .aluk(aluk),   //add it to control
+    .alu_out(alu_out)
 
 );
 
@@ -267,7 +291,7 @@ MUX  #(.DATA_WIDTH(16)) ADDR1MUX(
 
 
 
-MUX  #(.DATA_WIDTH(16)) ADDR2MUX(
+MUX  #(.DATA_WIDTH(16), .DATA_SELECT(2)) ADDR2MUX(
     .data_1({{5{ir[10]}},ir[10:0]}),
     .data_2({{7{ir[8]}},ir[8:0]}),
     .data_3({{10{ir[5]}},ir[5:0]}),  //might be error 

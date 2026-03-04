@@ -28,7 +28,7 @@ module control (
 	input logic			reset,
 
 	input logic  [15:0]	ir,
-	input logic			ben,
+	input logic			ben_out,
 
 	input logic 		continue_i,
 	input logic 		run_i,
@@ -38,7 +38,6 @@ module control (
 	output logic		ld_ir,
 	output logic		ld_pc,
 	output logic        ld_led,
-	output logic        ld_ben,
 
 						
 	output logic		gate_pc,
@@ -56,6 +55,7 @@ module control (
 	output logic [1:0]	pcmux_select,
 	output logic        ld_cc,
 	output logic        nzp_out,
+	output logic        ld_ben,
 	
 	//You should add additional control signals according to the SLC-3 datapath design
 
@@ -63,7 +63,7 @@ module control (
 	output logic		mem_wr_ena  // Mem Write Enable
 );
 
-	enum logic [19:0] {
+	enum logic [32:0] {
 		halted, 
 		pause_ir1,
 		pause_ir2, 
@@ -87,7 +87,6 @@ module control (
 		s_27,
 		s_7,
 		s_23,
-		s_16,
 		s_0,
 		s_22,
 		s_12,
@@ -116,17 +115,24 @@ module control (
 		ld_ir = 1'b0;
 		ld_pc = 1'b0;
 		ld_led = 1'b0;
+		ld_ben = 1'b0;
 		
 		//changed from default
 		mem_mem_ena = 1'b0; // I did not name this, blame whoever wrote the default code
 		mem_wr_ena = 1'b0;
 		gate_alu = 1'b0;
 		gate_mar_mux = 1'b0;
-		ld_ben = 1'b0;
 		sr1_select = 2'b00;
 		sr2_select = 2'b00;
 		dr_select = 2'b00;
 		ld_regfile = 1'b0;
+		addr1_mux_select = '0;
+		addr2_mux_select = '0;
+		aluk = '0;
+		mioenmux = '0;
+		pcmux_select = '0;
+		
+		
 		//end changes
 		
 		gate_pc = 1'b0;   
@@ -172,6 +178,8 @@ module control (
                              sr2_select = 2'b00;
                              ld_regfile = 1'b1;
                              aluk = 2'b00;
+                             ld_cc = 1'b1;
+                             
                         end 
                 else
                      begin 
@@ -181,8 +189,9 @@ module control (
                           sr2_select = 2'b01;
                           ld_regfile = 1'b1;
                           aluk= 2'b00;
+                          ld_cc = 1'b1;
                      end 
-             s_5: //NOT
+             s_5: //AND
                 if(ir[5] == 1'b0)
                         begin
                              gate_alu = 1'b1;
@@ -191,6 +200,7 @@ module control (
                              sr2_select = 2'b00;
                              ld_regfile = 1'b1;
                              aluk = 2'b01;
+                             ld_cc = 1'b1;
                         end 
                 else
                      begin 
@@ -200,6 +210,7 @@ module control (
                           sr2_select = 2'b01;
                           ld_regfile = 1'b1;
                           aluk= 2'b01;
+                          ld_cc = 1'b1;
                      end 
                      
             s_9: //NOT
@@ -211,6 +222,7 @@ module control (
                              sr2_select = 2'b00;
                              ld_regfile = 1'b1;
                              aluk = 2'b10;
+                             ld_cc = 1'b1;
                         end 
                 else
                      begin 
@@ -220,10 +232,12 @@ module control (
                           sr2_select = 2'b01;
                           ld_regfile = 1'b1;
                           aluk= 2'b10;
+                          ld_cc = 1'b1;
                      end 
               
               s_6: //LDR Part 1
               begin
+                  ld_mar = 1'b1;
                   gate_mar_mux = 1'b1;
                   dr_select = 2'b00;
                   sr1_select = 2'b01;
@@ -244,11 +258,13 @@ module control (
 			     dr_select = 2'b00; //select IR[11:9] as DR
 			     gate_mdr = 1'b1;
 			     ld_cc = 1'b1;
+			     ld_regfile = 1'b1;
 			  end
                 
 
               s_7: //STR Part 1
               begin //stolen from s_6 (they are the same)
+                  ld_mar = 1'b1;
                   gate_mar_mux = 1'b1;
                   dr_select = 2'b00;
                   sr1_select = 2'b01;
@@ -261,20 +277,21 @@ module control (
                     sr1_select = 2'b00; //Sets SR_1 to IR[11:9] 
                     aluk = 2'b11; //Pass SR_1 on with no modifications on to BUS
 					ld_mdr = 1'b1;
+					gate_alu = 1'b1;
 					mioenmux = 1'b0; //sets MDR to load from BUS
 			  end
 			  
 			  s_16_1, s_16_2, s_16_3: //STR Part 3  // the ca said we wont need to wait
 			  begin
 			     mem_wr_ena = 1'b1; //tell the memory we are about to write
-			     gate_mdr = 1'b1;  //i added this 
+			     mem_mem_ena  = 1'b1;
 			     //I think that is literally it.
 			  end
 			  
 			  s_4: //JSR
               begin				
                    dr_select = 2'b01; //ignore whatever IR is for DR and use register 7
-                   gate_pc = 1'b0; //get PC onto the bus
+                   gate_pc = 1'b1; //get PC onto the bus
                    ld_regfile = 1'b1; //allow regfile to load
 			  end
 			  
@@ -284,6 +301,8 @@ module control (
                    gate_pc = 1'b0; //get PC onto the bus
                    ld_pc = 1'b1; //allow pc to update with result from adder
                    addr2_mux_select = 2'b00; //pass SEXT IR[10:0] to adder
+                   pcmux_select = 2'b10;
+
 			  end			  
               
               s_12: //jmp
@@ -291,7 +310,9 @@ module control (
                     sr1_select = 2'b01;
                     aluk = 2'b11; //Pass SR_1 on with no modifications on to BUS
                     pcmux_select = 2'b01; //BUS value passes through mux
-                    ld_pc = 1'b0;
+                    ld_pc = 1'b1;
+                    gate_alu = 1'b1;
+                    
               end
               
               s_22:  //br 
@@ -300,6 +321,7 @@ module control (
                    gate_pc = 1'b0; //get PC onto the bus
                    ld_pc = 1'b1; //allow pc to update with result from adder
                    addr2_mux_select = 2'b01; //pass SEXT IR[8:0] to adder
+                   pcmux_select = 2'b10;
                 end 
                 
              s_0:
@@ -308,6 +330,10 @@ module control (
                 //ld_ben = (ir[11] & nzp_out) | (ir[10] & nzp_out) | (ir[9] & nzp_out);
              end
                 
+             s_32:
+             begin
+                ld_ben = 1'b1;
+             end
                     
               
             
@@ -389,19 +415,19 @@ module control (
 		      state_nxt = s_23;
 		      
 		    s_23:
-		      state_nxt = s_16;
-		    
-		    s_16_1:
 		      state_nxt = s_16_1;
 		    
-		   s_16_2:
+		    s_16_1:
 		      state_nxt = s_16_2;
+		    
+		   s_16_2:
+		      state_nxt = s_16_3;
 		   
 		   s_16_3:
 		      state_nxt = s_18;
 		   
 		   s_0:
-                    if(ben == 0)
+                    if(ben_out == 0)
                         state_nxt = s_18;
                     else
                         state_nxt = s_22;	 
