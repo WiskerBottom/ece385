@@ -140,13 +140,17 @@ load_reg #(.DATA_WIDTH(16)) mdr_reg (
 );
 
 
+assign ben = (ir[11] & nzp_out) | (ir[10] & nzp_out) | (ir[9] & nzp_out);
+
 always_comb
+begin
     if(bus[15] == 1'b1)
         nzp = 3'b100;
     else if(bus[15:0] == 16'b0)
         nzp = 3'b010;
     else
         nzp = 3'b001;
+end 
 
 load_reg #(.DATA_WIDTH(3)) nzp_reg (
     .clk    (clk),

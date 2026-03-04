@@ -55,6 +55,7 @@ module control (
 	output logic        mioenmux,
 	output logic [1:0]	pcmux_select,
 	output logic        ld_cc,
+	output logic        nzp_out,
 	
 	//You should add additional control signals according to the SLC-3 datapath design
 
@@ -263,9 +264,10 @@ module control (
 					mioenmux = 1'b0; //sets MDR to load from BUS
 			  end
 			  
-			  s_16_1, s_16_2, s_16_3: //STR Part 3
+			  s_16_1, s_16_2, s_16_3: //STR Part 3  // the ca said we wont need to wait
 			  begin
 			     mem_wr_ena = 1'b1; //tell the memory we are about to write
+			     gate_mdr = 1'b1;  //i added this 
 			     //I think that is literally it.
 			  end
 			  
@@ -291,6 +293,22 @@ module control (
                     pcmux_select = 2'b01; //BUS value passes through mux
                     ld_pc = 1'b0;
               end
+              
+              s_22:  //br 
+                begin
+                   addr1_mux_select = 2'b01; //pass PC to adder
+                   gate_pc = 1'b0; //get PC onto the bus
+                   ld_pc = 1'b1; //allow pc to update with result from adder
+                   addr2_mux_select = 2'b01; //pass SEXT IR[8:0] to adder
+                end 
+                
+             s_0:
+             begin 
+                //ld_ir = 1'b1;
+                //ld_ben = (ir[11] & nzp_out) | (ir[10] & nzp_out) | (ir[9] & nzp_out);
+             end
+                
+                    
               
             
       
@@ -354,7 +372,54 @@ module control (
 			
 			s_6:
 			 state_nxt = s_25_1;
+			 
 			s_25_1:
+			 state_nxt = s_25_2;
+			
+			s_25_2:
+			 state_nxt = s_25_3;
+		  
+		    s_25_3:
+		      state_nxt = s_27;
+		    
+		    s_27:
+		      state_nxt = s_18;
+		   
+		    s_7:
+		      state_nxt = s_23;
+		      
+		    s_23:
+		      state_nxt = s_16;
+		    
+		    s_16_1:
+		      state_nxt = s_16_1;
+		    
+		   s_16_2:
+		      state_nxt = s_16_2;
+		   
+		   s_16_3:
+		      state_nxt = s_18;
+		   
+		   s_0:
+                    if(ben == 0)
+                        state_nxt = s_18;
+                    else
+                        state_nxt = s_22;	 
+                     	   
+		   s_22:
+		      state_nxt = s_18;
+		   
+		   s_12:
+		      state_nxt = s_18;
+		   
+		   s_4:
+		      state_nxt = s_21;
+		   
+		   s_21:
+		      state_nxt = s_18;
+		   
+		   
+		   
 			     
 			     
 			 
