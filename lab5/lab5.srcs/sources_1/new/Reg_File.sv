@@ -191,7 +191,7 @@ end
 always_comb begin
     sr2_out = 16'b0;
   
-        case(sr1)
+        case(sr2)
         3'b000 : sr2_out = reg_out0;
         3'b001 : sr2_out = reg_out1;
         3'b010 : sr2_out = reg_out2;

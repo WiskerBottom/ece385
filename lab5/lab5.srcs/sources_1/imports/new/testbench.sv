@@ -38,7 +38,7 @@ initial begin
     reset = 0;
     #100
     
-    sw_i <= 16'h0003;
+    sw_i <= 16'h0031;
     
     #20
     
@@ -50,9 +50,31 @@ initial begin
     
     #100
 
-    sw_i <= 16'h1234;
+    sw_i <= 16'h0002;
+    
+    
     
     #100
+    
+    continue_i <= 1; 
+    
+    #100
+    
+    continue_i <= 0; 
+    
+    sw_i <= 16'h0002;
+    
+        
+    #100
+    
+    continue_i <= 1; 
+    
+    #100
+    
+    continue_i <= 0; 
+    
+    #100
+    
     
     
     $finish();

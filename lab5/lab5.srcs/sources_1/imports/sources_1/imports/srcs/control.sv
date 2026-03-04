@@ -54,7 +54,7 @@ module control (
 	output logic        mioenmux,
 	output logic [1:0]	pcmux_select,
 	output logic        ld_cc,
-	output logic        nzp_out,
+//	output logic        nzp_out,
 	output logic        ld_ben,
 	
 	//You should add additional control signals according to the SLC-3 datapath design

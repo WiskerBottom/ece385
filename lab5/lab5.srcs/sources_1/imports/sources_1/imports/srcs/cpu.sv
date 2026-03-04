@@ -158,8 +158,8 @@ assign led_o = ir;
 always_comb
 begin
 
-
-    if(bus == 16'b0) begin
+    nzp = '0;
+    if(bus == '0) begin
         nzp = 3'b010;
     end else if(bus[15] == 1'b1) begin
         nzp = 3'b100;
@@ -188,7 +188,7 @@ load_reg #(.DATA_WIDTH(3)) nzp_reg (
 );
 
 
-load_reg #(.DATA_WIDTH(3)) BEN (
+load_reg #(.DATA_WIDTH(1)) BEN (
     .clk    (clk),
     .reset  (reset),
 
@@ -256,7 +256,7 @@ MUX  #(.DATA_WIDTH(3), .DATA_SELECT(1)) SR1_mux(
 
 MUX  #(.DATA_WIDTH(16)) SR2_mux(
     .data_1(sr2_out),
-    .data_2({{11{ir[3]}},ir[4:0]}),
+    .data_2({{11{ir[4]}},ir[4:0]}),
     .data_3(),  //might be error 
     .data_4(),
     .muxselect(sr2_select),   //add it to control
