@@ -65,6 +65,7 @@ logic [15:0] bus;
 logic dr_select;
 logic [2:0] dr_mux_out;
 logic sr1_select;
+logic sr2_select;
 logic [2:0] sr1_mux_out;
 logic [15:0] sr1_out;
 logic [15:0] sr2_out;
@@ -145,18 +146,27 @@ load_reg #(.DATA_WIDTH(16)) mdr_reg (
 );
 
 
-assign ben = ((ir[11] && nzp_out[2]) || (ir[10] && nzp_out[1]) || (ir[9] && nzp_out[0])) | (nzp_out == 3'b000);
+//assign ben = ((ir[11] && nzp_out[2]) || (ir[10] && nzp_out[1]) || (ir[9] && nzp_out[0])); // | (nzp_out == 3'b000)
+assign ben = (ir[11] & nzp_out[2]) | (ir[10] & nzp_out[1]) | (ir[9] & nzp_out[0]); // | (nzp_out == 3'b000)
 //assign led_o[0] = ben_out;
 //assign led_o[3:1] = nzp_out;
-//assign led_o = ir;
-assign led_o = bus;
+assign led_o = ir;
 //assign ben = 1'b1;
 
 
 
 always_comb
 begin
-     
+
+
+    if(bus == 16'b0) begin
+        nzp = 3'b010;
+    end else if(bus[15] == 1'b1) begin
+        nzp = 3'b100;
+    end else begin
+        nzp = 3'b001;
+    end
+    /* 
     if(bus[15] == 1'b1) begin
         nzp = 3'b100;
     end else if(bus[15:0] == 16'b0) begin
@@ -164,7 +174,7 @@ begin
     end else begin
         nzp = 3'b001;
     end
-    
+    */
 end 
 
 load_reg #(.DATA_WIDTH(3)) nzp_reg (
@@ -246,7 +256,7 @@ MUX  #(.DATA_WIDTH(3), .DATA_SELECT(1)) SR1_mux(
 
 MUX  #(.DATA_WIDTH(16)) SR2_mux(
     .data_1(sr2_out),
-    .data_2({{12{ir[3]}},ir[3:0]}),
+    .data_2({{11{ir[3]}},ir[4:0]}),
     .data_3(),  //might be error 
     .data_4(),
     .muxselect(sr2_select),   //add it to control

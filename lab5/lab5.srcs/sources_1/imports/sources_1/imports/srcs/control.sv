@@ -44,12 +44,12 @@ module control (
 	output logic		gate_mdr,
 	output logic        gate_alu,      //i added this 
 	output logic        gate_mar_mux,  //i added this 
-	output logic      [1:0]  dr_select,
-	output logic      [1:0]  sr1_select,
-	output logic      [1:0]  sr2_select,
+	output logic        dr_select,
+	output logic        sr1_select,
+	output logic        sr2_select,
 	output logic        ld_regfile,
 	output logic      [1:0] aluk, 
-	output logic      [1:0] addr1_mux_select,    
+	output logic        addr1_mux_select,    
 	output logic      [1:0] addr2_mux_select,    
 	output logic        mioenmux,
 	output logic [1:0]	pcmux_select,
@@ -122,9 +122,9 @@ module control (
 		mem_wr_ena = 1'b0;
 		gate_alu = 1'b0;
 		gate_mar_mux = 1'b0;
-		sr1_select = 2'b00;
-		sr2_select = 2'b00;
-		dr_select = 2'b00;
+		sr1_select = 1'b0;
+		sr2_select = 1'b00;
+		dr_select = 1'b0;
 		ld_regfile = 1'b0;
 		addr1_mux_select = '0;
 		addr2_mux_select = '0;
@@ -173,9 +173,9 @@ module control (
                 if(ir[5] == 1'b0)
                         begin
                              gate_alu = 1'b1;
-                             dr_select = 2'b00;
-                             sr1_select = 2'b01;
-                             sr2_select = 2'b00;
+                             dr_select = 1'b0;
+                             sr1_select = 1'b1;
+                             sr2_select = 1'b00;
                              ld_regfile = 1'b1;
                              aluk = 2'b00;
                              ld_cc = 1'b1;
@@ -184,9 +184,9 @@ module control (
                 else
                      begin 
                           gate_alu = 1'b1;
-                          dr_select = 2'b00;
-                          sr1_select = 2'b01;
-                          sr2_select = 2'b01;
+                          dr_select = 1'b0;
+                          sr1_select = 1'b1;
+                          sr2_select = 1'b01;
                           ld_regfile = 1'b1;
                           aluk= 2'b00;
                           ld_cc = 1'b1;
@@ -195,9 +195,9 @@ module control (
                 if(ir[5] == 1'b0)
                         begin
                              gate_alu = 1'b1;
-                             dr_select = 2'b00;
-                             sr1_select = 2'b01;
-                             sr2_select = 2'b00;
+                             dr_select = 1'b0;
+                             sr1_select = 1'b1;
+                             sr2_select = 1'b00;
                              ld_regfile = 1'b1;
                              aluk = 2'b01;
                              ld_cc = 1'b1;
@@ -205,9 +205,9 @@ module control (
                 else
                      begin 
                           gate_alu = 1'b1;
-                          dr_select = 2'b00;
-                          sr1_select = 2'b01;
-                          sr2_select = 2'b01;
+                          dr_select = 1'b0;
+                          sr1_select = 1'b1;
+                          sr2_select = 1'b01;
                           ld_regfile = 1'b1;
                           aluk= 2'b01;
                           ld_cc = 1'b1;
@@ -217,9 +217,9 @@ module control (
                 if(ir[5] == 1'b0)
                         begin
                              gate_alu = 1'b1;
-                             dr_select = 2'b00;
-                             sr1_select = 2'b01;
-                             sr2_select = 2'b00;
+                             dr_select = 1'b0;
+                             sr1_select = 1'b1;
+                             sr2_select = 1'b00;
                              ld_regfile = 1'b1;
                              aluk = 2'b10;
                              ld_cc = 1'b1;
@@ -227,9 +227,9 @@ module control (
                 else
                      begin 
                           gate_alu = 1'b1;
-                          dr_select = 2'b00;
-                          sr1_select = 2'b01;
-                          sr2_select = 2'b01;
+                          dr_select = 1'b0;
+                          sr1_select = 1'b1;
+                          sr2_select = 1'b01;
                           ld_regfile = 1'b1;
                           aluk= 2'b10;
                           ld_cc = 1'b1;
@@ -239,9 +239,9 @@ module control (
               begin
                   ld_mar = 1'b1;
                   gate_mar_mux = 1'b1;
-                  dr_select = 2'b00;
-                  sr1_select = 2'b01;
-                  addr1_mux_select = 2'b00;
+                  dr_select = 1'b0;
+                  sr1_select = 1'b1;
+                  addr1_mux_select = 1'b0;
                   addr2_mux_select = 2'b10;
               end
               
@@ -255,7 +255,7 @@ module control (
 			  
 			  s_27: //LDR Part 3
 			  begin
-			     dr_select = 2'b00; //select IR[11:9] as DR
+			     dr_select = 1'b0; //select IR[11:9] as DR
 			     gate_mdr = 1'b1;
 			     ld_cc = 1'b1;
 			     ld_regfile = 1'b1;
@@ -266,15 +266,15 @@ module control (
               begin //stolen from s_6 (they are the same)
                   ld_mar = 1'b1;
                   gate_mar_mux = 1'b1;
-                  dr_select = 2'b00;
-                  sr1_select = 2'b01;
-                  addr1_mux_select = 2'b00;
+                  dr_select = 1'b0;
+                  sr1_select = 1'b1;
+                  addr1_mux_select = 1'b0;
                   addr2_mux_select = 2'b10;
               end
               
               s_23: //STR Part 2
               begin				
-                    sr1_select = 2'b00; //Sets SR_1 to IR[11:9] 
+                    sr1_select = 1'b0; //Sets SR_1 to IR[11:9] 
                     aluk = 2'b11; //Pass SR_1 on with no modifications on to BUS
 					ld_mdr = 1'b1;
 					gate_alu = 1'b1;
@@ -290,14 +290,14 @@ module control (
 			  
 			  s_4: //JSR
               begin				
-                   dr_select = 2'b01; //ignore whatever IR is for DR and use register 7
+                   dr_select = 1'b1; //ignore whatever IR is for DR and use register 7
                    gate_pc = 1'b1; //get PC onto the bus
                    ld_regfile = 1'b1; //allow regfile to load
 			  end
 			  
 			  s_21: //JSR
               begin				
-                   addr1_mux_select = 2'b01; //pass PC to adder
+                   addr1_mux_select = 1'b1; //pass PC to adder
                    gate_pc = 1'b0; //get PC onto the bus
                    ld_pc = 1'b1; //allow pc to update with result from adder
                    addr2_mux_select = 2'b00; //pass SEXT IR[10:0] to adder
@@ -307,7 +307,7 @@ module control (
               
               s_12: //jmp
               begin
-                    sr1_select = 2'b01;
+                    sr1_select = 1'b1;
                     aluk = 2'b11; //Pass SR_1 on with no modifications on to BUS
                     pcmux_select = 2'b01; //BUS value passes through mux
                     ld_pc = 1'b1;
@@ -317,7 +317,7 @@ module control (
               
               s_22:  //br 
                 begin
-                   addr1_mux_select = 2'b01; //pass PC to adder
+                   addr1_mux_select = 1'b1; //pass PC to adder
                    gate_pc = 1'b0; //get PC onto the bus
                    ld_pc = 1'b1; //allow pc to update with result from adder
                    addr2_mux_select = 2'b01; //pass SEXT IR[8:0] to adder
